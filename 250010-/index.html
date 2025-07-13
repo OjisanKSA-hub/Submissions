@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submission Review</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f6f8fa; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 32px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 32px; }
+        h1 { text-align: center; color: #2d3748; }
+        .info { margin-bottom: 24px; }
+        .info label { font-weight: bold; color: #4a5568; display: inline-block; width: 120px; }
+        .fixed-images { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
+        .fixed-images img { width: 48%; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .gallery { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 32px; }
+        .gallery-item { background: #f1f5f9; border-radius: 6px; padding: 12px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.03); }
+        .gallery-item img { max-width: 100%; border-radius: 4px; margin-bottom: 8px; }
+        .gallery-item .comment { font-size: 0.97em; color: #475569; }
+        .actions { display: flex; justify-content: center; gap: 32px; }
+        .actions button { padding: 12px 32px; font-size: 1.1em; border: none; border-radius: 5px; cursor: pointer; }
+        .accept { background: #38a169; color: #fff; }
+        .reject { background: #e53e3e; color: #fff; }
+        @media (max-width: 600px) {
+            .gallery { grid-template-columns: 1fr; }
+            .fixed-images { flex-direction: column; }
+            .fixed-images img { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Submission Review</h1>
+        <div class="info">
+            <div><label>Code:</label> <span id="code"></span></div>
+            <div><label>Name:</label> <span id="name"></span></div>
+            <div><label>Phone:</label> <span id="Phone"></span></div>
+        </div>
+        <div class="fixed-images">
+            <img src="https://drive.google.com/thumbnail?id=1oCTRpMUMn8SXMg7s7VS7gV15fovdz9rU" alt="Fixed Image 1">
+            <img src="https://drive.google.com/thumbnail?id=1cbNrPoClRPa0fqPetNNLsqrpMO-hycqW" alt="Fixed Image 2">
+        </div>
+        <div class="gallery" id="gallery"></div>
+        <div class="actions">
+            <button class="accept" onclick="submitDecision('accept')">Accept</button>
+            <button class="reject" onclick="submitDecision('reject')">Reject</button>
+        </div>
+    </div>
+    <script>
+        // Replace these with your dynamic data from Google Sheets
+        const submissionData = {
+            code: "250010",
+            name: "",
+            phone: "",
+            images: [
+                { url: "https://drive.google.com/thumbnail?id=1pRbD55sUAUQR4D17HMmcrCdpMPab98AL", comment: "please......." },
+                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 2 comment" },
+                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 3 comment" },
+                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 4 comment" },
+                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 5 comment" },
+                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 6 comment" },
+                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 7 comment" },
+                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 8 comment" },
+                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 9 comment" }
+            ]
+        };
+
+        // Populate static fields
+        document.getElementById('code').textContent = submissionData.code;
+        document.getElementById('name').textContent = submissionData.name;
+        document.getElementById('phone').textContent = submissionData.phone;
+
+        // Populate gallery
+        const gallery = document.getElementById('gallery');
+        submissionData.images.forEach((img, idx) => {
+            if (img.url) {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${img.url}" alt="Submission Image ${idx + 1}">
+                    <div class="comment">${img.comment || ''}</div>
+                `;
+                gallery.appendChild(item);
+            }
+        });
+
+        // Accept/Reject actions
+        function submitDecision(decision) {
+            // Example: send HTTP request with decision and code
+            fetch('YOUR_ENDPOINT_URL', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    code: submissionData.code,
+                    decision: decision
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Submission ' + decision + 'ed successfully!');
+                } else {
+                    alert('Error submitting decision.');
+                }
+            })
+            .catch(() => alert('Network error.'));
+        }
+    </script>
+</body>
+</html>
