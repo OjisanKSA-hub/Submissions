@@ -1,108 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>Submission Review</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body { font-family: Arial, sans-serif; background: #f6f8fa; margin: 0; padding: 0; }
-        .container { max-width: 800px; margin: 32px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 32px; }
-        h1 { text-align: center; color: #2d3748; }
-        .info { margin-bottom: 24px; }
-        .info label { font-weight: bold; color: #4a5568; display: inline-block; width: 120px; }
-        .fixed-images { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
-        .fixed-images img { width: 48%; border-radius: 6px; border: 1px solid #e2e8f0; }
-        .gallery { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 32px; }
-        .gallery-item { background: #f1f5f9; border-radius: 6px; padding: 12px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.03); }
-        .gallery-item img { max-width: 100%; border-radius: 4px; margin-bottom: 8px; }
-        .gallery-item .comment { font-size: 0.97em; color: #475569; }
-        .actions { display: flex; justify-content: center; gap: 32px; }
-        .actions button { padding: 12px 32px; font-size: 1.1em; border: none; border-radius: 5px; cursor: pointer; }
-        .accept { background: #38a169; color: #fff; }
-        .reject { background: #e53e3e; color: #fff; }
-        @media (max-width: 600px) {
-            .gallery { grid-template-columns: 1fr; }
-            .fixed-images { flex-direction: column; }
-            .fixed-images img { width: 100%; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>متجر الجاكيت المخصص</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Submission Review</h1>
-        <div class="info">
-            <div><label>Code:</label> <span id="Code"></span></div>
-            <div><label>Name:</label> <span id="Name"></span></div>
-            <div><label>Phone:</label> <span id="Phone"></span></div>
-        </div>
-        <div class="fixed-images">
-            <img src="https://drive.google.com/thumbnail?id=1oCTRpMUMn8SXMg7s7VS7gV15fovdz9rU" alt="Fixed Image 1">
-            <img src="https://drive.google.com/thumbnail?id=1cbNrPoClRPa0fqPetNNLsqrpMO-hycqW" alt="Fixed Image 2">
-        </div>
-        <div class="gallery" id="gallery"></div>
-        <div class="actions">
-            <button class="accept" onclick="submitDecision('accept')">Accept</button>
-            <button class="reject" onclick="submitDecision('reject')">Reject</button>
-        </div>
+  <div class="container">
+    <h1>تفاصيل الجاكيت</h1>
+    <div class="jacket-images-row">
+      <div class="jacket-front">
+        <img src="jacket-front.jpg" alt="جاكيت أمامي" id="jacketFrontImg">
+        <div class="jacket-label">أمام</div>
+      </div>
+      <div class="jacket-back">
+        <img src="jacket-back.jpg" alt="جاكيت خلفي" id="jacketBackImg">
+        <div class="jacket-label">خلف</div>
+      </div>
     </div>
-    <script>
-        // Replace these with your dynamic data from Google Sheets
-        const submissionData = {
-            code: "250010",
-            name: "",
-            phone: "",
-            images: [
-                { url: "https://drive.google.com/thumbnail?id=1pRbD55sUAUQR4D17HMmcrCdpMPab98AL", comment: "please......." },
-                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 2 comment" },
-                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 3 comment" },
-                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 4 comment" },
-                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 5 comment" },
-                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 6 comment" },
-                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 7 comment" },
-                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 8 comment" },
-                { url: "https://drive.google.com/thumbnail?id=11yyy612wYUC0gGVhlVWsfU6Q54_hxryB", comment: "Image 9 comment" }
-            ]
-        };
-
-        // Populate static fields
-        document.getElementById('code').textContent = submissionData.code;
-        document.getElementById('name').textContent = submissionData.name;
-        document.getElementById('phone').textContent = submissionData.phone;
-
-        // Populate gallery
-        const gallery = document.getElementById('gallery');
-        submissionData.images.forEach((img, idx) => {
-            if (img.url) {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.innerHTML = `
-                    <img src="${img.url}" alt="Submission Image ${idx + 1}">
-                    <div class="comment">${img.comment || ''}</div>
-                `;
-                gallery.appendChild(item);
-            }
-        });
-
-        // Accept/Reject actions
-        function submitDecision(decision) {
-            // Example: send HTTP request with decision and code
-            fetch('YOUR_ENDPOINT_URL', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    code: submissionData.code,
-                    decision: decision
-                })
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Submission ' + decision + 'ed successfully!');
-                } else {
-                    alert('Error submitting decision.');
-                }
-            })
-            .catch(() => alert('Network error.'));
-        }
-    </script>
+    <form id="jacketForm" enctype="multipart/form-data">
+      <div class="form-fields">
+        <div class="form-group">
+          <label for="teamCode">رمز الفريق</label>
+          <input type="text" id="teamCode" name="teamCode" readonly>
+        </div>
+        <div class="form-group">
+          <label for="name">الاسم</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">رقم الهاتف (مع رمز الدولة)</label>
+          <input type="tel" id="phone" name="phone" placeholder="+48..." required pattern="^\+[0-9]{6,}$">
+        </div>
+        <div class="form-group">
+          <label for="jacketName">الاسم بالخلف</label>
+          <input type="text" id="jacketName" name="jacketName" required>
+        </div>
+        <div class="form-group">
+          <label for="size">المقاس</label>
+          <select id="size" name="size" required>
+            <option value="">اختر المقاس</option>
+            <option value="S">صغير</option>
+            <option value="M">متوسط</option>
+            <option value="L">كبير</option>
+            <option value="XL">كبير جداً</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="jacketColor">لون الجاكيت</label>
+          <input type="color" id="jacketColor" name="jacketColor" value="#f7b6d2" required>
+        </div>
+        <div class="form-group">
+          <label for="sleeveColor">لون الأكمام</label>
+          <input type="color" id="sleeveColor" name="sleeveColor" value="#f7b6d2" required>
+        </div>
+        <div class="form-group">
+          <label for="sleeveRubberColor">لون مطاط الكم</label>
+          <input type="color" id="sleeveRubberColor" name="sleeveRubberColor" value="#e573a7" required>
+        </div>
+      </div>
+      <div class="images-upload-list">
+        <label>هل تريد رفع تصميم لكل منطقة؟ اختر المناطق التي تريد رفع صورة لها:</label>
+        <div id="imagesContainer">
+          <div class="image-upload" id="upload-row-1">
+            <label>1 (أمام):</label>
+            <input type="checkbox" id="enable1" name="enable1">
+            <span>أرغب في رفع صورة</span>
+            <span class="upload-fields" style="display:none">
+              <input type="file" accept="image/*" name="image1" id="image1">
+              <input type="text" name="comment1" placeholder="تعليق للصورة 1">
+            </span>
+          </div>
+          <div class="image-upload" id="upload-row-2">
+            <label>2 (أمام):</label>
+            <input type="checkbox" id="enable2" name="enable2">
+            <span>أرغب في رفع صورة</span>
+            <span class="upload-fields" style="display:none">
+              <input type="file" accept="image/*" name="image2" id="image2">
+              <input type="text" name="comment2" placeholder="تعليق للصورة 2">
+            </span>
+          </div>
+          <div class="image-upload" id="upload-row-3">
+            <label>3 (كم أيسر):</label>
+            <input type="checkbox" id="enable3" name="enable3">
+            <span>أرغب في رفع صورة</span>
+            <span class="upload-fields" style="display:none">
+              <input type="file" accept="image/*" name="image3" id="image3">
+              <input type="text" name="comment3" placeholder="تعليق للصورة 3">
+            </span>
+          </div>
+          <div class="image-upload" id="upload-row-4">
+            <label>4 (أمام):</label>
+            <input type="checkbox" id="enable4" name="enable4">
+            <span>أرغب في رفع صورة</span>
+            <span class="upload-fields" style="display:none">
+              <input type="file" accept="image/*" name="image4" id="image4">
+              <input type="text" name="comment4" placeholder="تعليق للصورة 4">
+            </span>
+          </div>
+          <div class="image-upload" id="upload-row-5">
+            <label>5 (أمام):</label>
+            <input type="checkbox" id="enable5" name="enable5">
+            <span>أرغب في رفع صورة</span>
+            <span class="upload-fields" style="display:none">
+              <input type="file" accept="image/*" name="image5" id="image5">
+              <input type="text" name="comment5" placeholder="تعليق للصورة 5">
+            </span>
+          </div>
+          <div class="image-upload" id="upload-row-6">
+            <label>6 (كم أيمن):</label>
+            <input type="checkbox" id="enable6" name="enable6">
+            <span>أرغب في رفع صورة</span>
+            <span class="upload-fields" style="display:none">
+              <input type="file" accept="image/*" name="image6" id="image6">
+              <input type="text" name="comment6" placeholder="تعليق للصورة 6">
+            </span>
+          </div>
+          <div class="image-upload" id="upload-row-7">
+            <label>7 (أمام):</label>
+            <input type="checkbox" id="enable7" name="enable7">
+            <span>أرغب في رفع صورة</span>
+            <span class="upload-fields" style="display:none">
+              <input type="file" accept="image/*" name="image7" id="image7">
+              <input type="text" name="comment7" placeholder="تعليق للصورة 7">
+            </span>
+          </div>
+          <div class="image-upload" id="upload-row-8">
+            <label>8 (أمام):</label>
+            <input type="checkbox" id="enable8" name="enable8">
+            <span>أرغب في رفع صورة</span>
+            <span class="upload-fields" style="display:none">
+              <input type="file" accept="image/*" name="image8" id="image8">
+              <input type="text" name="comment8" placeholder="تعليق للصورة 8">
+            </span>
+          </div>
+          <div class="image-upload" id="upload-row-9">
+            <label>9 (خلف):</label>
+            <input type="checkbox" id="enable9" name="enable9">
+            <span>أرغب في رفع صورة</span>
+            <span class="upload-fields" style="display:none">
+              <input type="file" accept="image/*" name="image9" id="image9">
+              <input type="text" name="comment9" placeholder="تعليق للصورة 9">
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>السعر:</label>
+        <span id="price">0</span> ريال سعودي
+      </div>
+      <button type="submit">إرسال الطلب</button>
+    </form>
+  </div>
+  <script src="script.js"></script>
 </body>
-</html>
+</html> 
