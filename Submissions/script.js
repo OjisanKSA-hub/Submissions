@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append(`comment${i}`, comment);
       }
     }
-    fetch('https://n8n.srv886746.hstgr.cloud/webhook-test/7d334242-43f4-4305-9b25-93cb1f6a7376', {
+    fetch('https://n8n.srv886746.hstgr.cloud/webhook-test/70598a9b-fe09-4b8b-8311-7e310db53ba8', {
       method: 'POST',
       body: formData
     })
