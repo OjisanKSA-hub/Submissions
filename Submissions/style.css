@@ -225,4 +225,17 @@ button[type="submit"]:hover {
   font-weight: bold;
   color: #d72660;
   font-size: 1.2rem;
+}
+.autofill-field {
+  background: #e6f7ff;
+  border: 2px solid #1890ff;
+  color: #222;
+  font-weight: bold;
+}
+.autofill-note {
+  display: block;
+  color: #1890ff;
+  font-size: 0.95em;
+  margin-top: 2px;
+  margin-bottom: 6px;
 } 
