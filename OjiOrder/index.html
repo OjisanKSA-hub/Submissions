@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نموذج طلب جاكيت - متجر أوجيسان</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>مرحباً بكم في متجر أوجيسان</h1>
+      <h2>نموذج طلب جاكيت</h2>
+      <p>يرجى تعبئة هذا النموذج حتى نتمكن من إرسال رابط تخصيص الجاكيت لك أو لك ولفريقك</p>
+    </header>
+    <form id="jacketOrderForm" autocomplete="off">
+      <div class="form-group">
+        <label for="name">الاسم</label>
+        <input type="text" id="name" name="الاسم" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">رقم الجوال</label>
+        <input type="text" id="phone" name="رقم الجوال" placeholder="+966...." required pattern="^\+[0-9]{6,}$">
+        <small class="error" id="phoneError"></small>
+      </div>
+      <div class="form-group">
+        <label>نوع الطلب</label>
+        <div class="order-type-options">
+          <label><input type="radio" name="نوع الطلب" value="فردي" required> طلب فردي، لجاكيت واحد، السعر يبدأ من 255 ريال</label>
+          <label><input type="radio" name="نوع الطلب" value="فريق1-4"> طلب فريق، من 1 إلى 4 جاكيتات، السعر يبدأ من 255 ريال لكل جاكيت</label>
+          <label><input type="radio" name="نوع الطلب" value="فريق5-29"> طلب فريق، من 5 إلى 29 جاكيتاً بألوان وتصاميم مختلفة، السعر يبدأ من 255 ريال لكل جاكيت</label>
+          <label><input type="radio" name="نوع الطلب" value="عرض ترويجي" id="promoOption"> طلب فريق، من 5 إلى 29 جاكيتاً بلون واحد ولون أكمام واحد ولون رباط الأكمام الواحد وتصميم خلفي واحد (عرض ترويجي)، السعر يبدأ من 219 ريال لكل جاكيت</label>
+        </div>
+      </div>
+      <div id="promoFields" style="display:none">
+        <div class="form-group">
+          <label>لون الجاكيت</label>
+          <div class="color-swatches" id="jacketColorChoices">
+            <label class="color-swatch white"><input type="radio" name="لون الجاكيت" value="أبيض" required> أبيض</label>
+            <label class="color-swatch navy"><input type="radio" name="لون الجاكيت" value="كحلي"> كحلي</label>
+            <label class="color-swatch black"><input type="radio" name="لون الجاكيت" value="أسود"> أسود</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>لون الأكمام</label>
+          <div class="color-swatches" id="sleeveColorChoices">
+            <label class="color-swatch pink"><input type="radio" name="لون الأكمام" value="وردي" required> وردي</label>
+            <label class="color-swatch olive"><input type="radio" name="لون الأكمام" value="زيتوني"> زيتوني</label>
+            <label class="color-swatch navy"><input type="radio" name="لون الأكمام" value="كحلي"> كحلي</label>
+            <label class="color-swatch maroon"><input type="radio" name="لون الأكمام" value="عنابي"> عنابي</label>
+            <label class="color-swatch vblack"><input type="radio" name="لون الأكمام" value="أسود فحمي"> أسود فحمي</label>
+            <label class="color-swatch grey"><input type="radio" name="لون الأكمام" value="رمادي"> رمادي</label>
+            <label class="color-swatch lgrey"><input type="radio" name="لون الأكمام" value="رمادي فاتح"> رمادي فاتح</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>لون رباط الأكمام</label>
+          <div class="color-swatches" id="sleeveRubberColorChoices">
+            <label class="color-swatch pink"><input type="radio" name="لون رباط الأكمام" value="وردي" required> وردي</label>
+            <label class="color-swatch olive"><input type="radio" name="لون رباط الأكمام" value="زيتوني"> زيتوني</label>
+            <label class="color-swatch navy"><input type="radio" name="لون رباط الأكمام" value="كحلي"> كحلي</label>
+            <label class="color-swatch maroon"><input type="radio" name="لون رباط الأكمام" value="عنابي"> عنابي</label>
+            <label class="color-swatch vblack"><input type="radio" name="لون رباط الأكمام" value="أسود فحمي"> أسود فحمي</label>
+            <label class="color-swatch grey"><input type="radio" name="لون رباط الأكمام" value="رمادي"> رمادي</label>
+            <label class="color-swatch lgrey"><input type="radio" name="لون رباط الأكمام" value="رمادي فاتح"> رمادي فاتح</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="backDesign">رفع صورة لتصميم الظهر</label>
+          <input type="file" id="backDesign" name="رفع صورة لتصميم الظهر" accept="image/jpeg, image/png" required>
+          <div id="backExampleBox" class="back-example-box" style="display:none">
+            <img src="Back.jpg" alt="مثال تصميم الظهر" class="back-example-img">
+            <div class="back-example-caption">مثال لتصميم الظهر</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" id="teamMembersGroup" style="display:none">
+        <label for="teamMembers">عدد أعضاء الفريق</label>
+        <input type="number" id="teamMembers" name="عدد أعضاء الفريق" min="1" max="29">
+        <small class="error" id="teamMembersError"></small>
+      </div>
+      <fieldset>
+        <legend>تفاصيل الشحن</legend>
+        <div class="form-group">
+          <label for="country">الدولة</label>
+          <select id="country" name="الدولة" required>
+            <option value="السعودية" selected>السعودية</option>
+            <option value="الإمارات">الإمارات</option>
+            <option value="الكويت">الكويت</option>
+            <option value="قطر">قطر</option>
+            <option value="البحرين">البحرين</option>
+            <option value="عمان">عمان</option>
+            <option value="اليمن">اليمن</option>
+            <option value="أخرى">أخرى</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="city">المدينة</label>
+          <input type="text" id="city" name="المدينة" required>
+        </div>
+        <div class="form-group">
+          <label for="neighborhood">الحي</label>
+          <input type="text" id="neighborhood" name="الحي" required>
+        </div>
+        <div class="form-group">
+          <label for="street">الشارع</label>
+          <input type="text" id="street" name="الشارع" required>
+        </div>
+        <div class="form-group">
+          <label for="details">تفاصيل إضافية</label>
+          <textarea id="details" name="تفاصيل إضافية" rows="2"></textarea>
+        </div>
+      </fieldset>
+      <div class="shipping-info">
+        <h3>أسعار الشحن</h3>
+        <ul>
+          <li>داخل السعودية: مجاناً</li>
+          <li>دول الخليج:
+            <ul>
+              <li>من 1 إلى 10 جاكيتات: 75 ريال لكل جاكيت</li>
+              <li>من 10 جاكيتات فأكثر: تواصل مع خدمة العملاء لتحديد السعر</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <button type="submit" id="submitBtn">إرسال الطلب</button>
+    </form>
+    <div id="successPage" style="display:none">
+      <h2>تمت عملية الإرسال بنجاح. شكراً لك.</h2>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html> 
