@@ -103,7 +103,7 @@ form.addEventListener('submit', function(e) {
   });
   formData.append('order_json', JSON.stringify(orderObj));
 
-  fetch('https://n8n.srv886746.hstgr.cloud/webhook-test/860b7952-4e3d-45d9-8d00-52b759909d72', {
+  fetch('https://n8n.srv886746.hstgr.cloud/webhook/860b7952-4e3d-45d9-8d00-52b759909d72', {
     method: 'POST',
     body: formData
   })
