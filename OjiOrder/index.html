@@ -18,9 +18,20 @@
         <label for="name">الاسم</label>
         <input type="text" id="name" name="الاسم" required>
       </div>
-      <div class="form-group">
-        <label for="phone">رقم الجوال</label>
-        <input type="text" id="phone" name="رقم الجوال" placeholder="+966...." required pattern="^\+[0-9]{6,}$">
+      <div class="form-group phone-group">
+        <label for="phoneNumber">رقم الجوال</label>
+        <div class="phone-fields">
+          <select id="countryCode" name="رمز الدولة" required>
+            <option value="+966">السعودية ��🇦 (+966)</option>
+            <option value="+971">الإمارات 🇦🇪 (+971)</option>
+            <option value="+965">الكويت 🇰🇼 (+965)</option>
+            <option value="+974">قطر 🇶🇦 (+974)</option>
+            <option value="+973">البحرين 🇧🇭 (+973)</option>
+            <option value="+968">عمان 🇴🇲 (+968)</option>
+            <option value="+48">بولندا 🇵🇱 (+48)</option>
+          </select>
+          <input type="text" id="phoneNumber" name="رقم الجوال" placeholder="أدخل رقم الجوال بدون رمز الدولة" required pattern="^[0-9]{6,}$">
+        </div>
         <small class="error" id="phoneError"></small>
       </div>
       <div class="form-group">
@@ -33,6 +44,21 @@
         </div>
       </div>
       <div id="promoFields" style="display:none">
+        <div class="form-group" id="teamMembersGroup" style="display:none">
+          <label for="teamMembers">عدد أعضاء الفريق</label>
+          <input type="number" id="teamMembers" name="عدد أعضاء الفريق" min="1" max="29">
+          <small class="error" id="teamMembersError"></small>
+        </div>
+        <div class="form-group">
+          <div id="backExampleBox" class="back-example-box" style="display:none">
+            <img src="Back.jpg" alt="مثال تصميم الظهر" class="back-example-img">
+            <div class="back-example-caption">مثال لتصميم الظهر</div>
+          </div>
+          <label for="backDesign">رفع صورة لتصميم الظهر</label>
+          <input type="file" id="backDesign" name="رفع صورة لتصميم الظهر" accept="image/jpeg, image/png" required>
+          <label for="backComment" style="margin-top:0.7rem;">تعليقات إضافية أو ملاحظات حول التصميم (اختياري)</label>
+          <textarea id="backComment" name="تعليقات تصميم الظهر" rows="2" placeholder="اكتب أي ملاحظات أو تعليمات إضافية هنا"></textarea>
+        </div>
         <div class="form-group">
           <label>لون الجاكيت</label>
           <div class="color-swatches" id="jacketColorChoices">
@@ -55,29 +81,26 @@
         </div>
         <div class="form-group">
           <label>لون رباط الأكمام</label>
-          <div class="color-swatches" id="sleeveRubberColorChoices">
-            <label class="color-swatch pink"><input type="radio" name="لون رباط الأكمام" value="وردي" required> وردي</label>
-            <label class="color-swatch olive"><input type="radio" name="لون رباط الأكمام" value="زيتوني"> زيتوني</label>
-            <label class="color-swatch navy"><input type="radio" name="لون رباط الأكمام" value="كحلي"> كحلي</label>
-            <label class="color-swatch maroon"><input type="radio" name="لون رباط الأكمام" value="عنابي"> عنابي</label>
-            <label class="color-swatch vblack"><input type="radio" name="لون رباط الأكمام" value="أسود فحمي"> أسود فحمي</label>
-            <label class="color-swatch grey"><input type="radio" name="لون رباط الأكمام" value="رمادي"> رمادي</label>
-            <label class="color-swatch lgrey"><input type="radio" name="لون رباط الأكمام" value="رمادي فاتح"> رمادي فاتح</label>
+          <select id="sleeveRubberColorSelect" name="لون رباط الأكمام" required>
+            <option value="" disabled selected>اختر لون رباط الأكمام</option>
+            <option value="Black-2-blue.png">أسود مع خطين أزرق</option>
+            <option value="Black-2-grey.png">أسود مع خطين رمادي</option>
+            <option value="Black-2-maroon.png">أسود مع خطين عنابي</option>
+            <option value="Black-2-move.png">أسود مع خطين بنفسجي</option>
+            <option value="Black-2-red.png">أسود مع خطين أحمر</option>
+            <option value="Black-2-white.png">أسود مع خطين أبيض</option>
+            <option value="Black-green.png">أسود مع خط أخضر</option>
+            <option value="Navy.png">كحلي</option>
+            <option value="Navy-2-white.png">كحلي مع خطين أبيض</option>
+            <option value="Pink-2-white.png">وردي مع خطين أبيض</option>
+            <option value="White-2-blue.png">أبيض مع خطين أزرق</option>
+            <option value="White-2-gold.png">أبيض مع خطين ذهبي</option>
+          </select>
+          <div id="sleeveRubberColorPreview" class="sleeve-rubber-preview" style="display:none">
+            <img src="" alt="معاينة لون رباط الأكمام" id="sleeveRubberColorImg">
+            <div id="sleeveRubberColorLabel"></div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="backDesign">رفع صورة لتصميم الظهر</label>
-          <input type="file" id="backDesign" name="رفع صورة لتصميم الظهر" accept="image/jpeg, image/png" required>
-          <div id="backExampleBox" class="back-example-box" style="display:none">
-            <img src="Back.jpg" alt="مثال تصميم الظهر" class="back-example-img">
-            <div class="back-example-caption">مثال لتصميم الظهر</div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group" id="teamMembersGroup" style="display:none">
-        <label for="teamMembers">عدد أعضاء الفريق</label>
-        <input type="number" id="teamMembers" name="عدد أعضاء الفريق" min="1" max="29">
-        <small class="error" id="teamMembersError"></small>
       </div>
       <fieldset>
         <legend>تفاصيل الشحن</legend>
@@ -90,7 +113,6 @@
             <option value="قطر">قطر</option>
             <option value="البحرين">البحرين</option>
             <option value="عمان">عمان</option>
-            <option value="اليمن">اليمن</option>
             <option value="أخرى">أخرى</option>
           </select>
         </div>
@@ -127,6 +149,9 @@
     </form>
     <div id="successPage" style="display:none">
       <h2>تمت عملية الإرسال بنجاح. شكراً لك.</h2>
+      <div class="success-info">
+        سنقوم بإرسال التعليمات التالية ورابط رفع تصاميم الجاكيتات على الواتساب الخاص بك قريباً.
+      </div>
     </div>
   </div>
   <script src="script.js"></script>
