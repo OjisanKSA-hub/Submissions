@@ -47,17 +47,23 @@ orderTypeRadios.forEach(radio => {
 });
 
 // التحقق من رقم الجوال لأي رمز دولة
-const phoneInput = document.getElementById('phone');
+const countryCodeInput = document.getElementById('countryCode');
+const phoneNumberInput = document.getElementById('phoneNumber');
 const phoneError = document.getElementById('phoneError');
-phoneInput.addEventListener('input', function() {
-  const val = phoneInput.value.trim();
-  const regex = /^\+[0-9]{6,}$/;
+
+function getFullPhoneNumber() {
+  return countryCodeInput.value + phoneNumberInput.value;
+}
+
+phoneNumberInput.addEventListener('input', function() {
+  const val = phoneNumberInput.value.trim();
+  const regex = /^[0-9]{6,}$/;
   if (!regex.test(val)) {
-    phoneError.textContent = 'يجب أن يبدأ الرقم بـ + ويحتوي على 6 أرقام على الأقل بعده';
-    phoneInput.classList.add('invalid');
+    phoneError.textContent = 'يرجى إدخال رقم جوال صحيح (6 أرقام على الأقل) بدون رمز الدولة';
+    phoneNumberInput.classList.add('invalid');
   } else {
     phoneError.textContent = '';
-    phoneInput.classList.remove('invalid');
+    phoneNumberInput.classList.remove('invalid');
   }
 });
 
@@ -75,19 +81,37 @@ teamMembersInput.addEventListener('input', function() {
   }
 });
 
+const sleeveRubberColorSelect = document.getElementById('sleeveRubberColorSelect');
+const sleeveRubberColorPreview = document.getElementById('sleeveRubberColorPreview');
+const sleeveRubberColorImg = document.getElementById('sleeveRubberColorImg');
+const sleeveRubberColorLabel = document.getElementById('sleeveRubberColorLabel');
+
+if (sleeveRubberColorSelect) {
+  sleeveRubberColorSelect.addEventListener('change', function() {
+    const selectedOption = sleeveRubberColorSelect.options[sleeveRubberColorSelect.selectedIndex];
+    if (sleeveRubberColorSelect.value) {
+      sleeveRubberColorImg.src = sleeveRubberColorSelect.value;
+      sleeveRubberColorLabel.textContent = selectedOption.text;
+      sleeveRubberColorPreview.style.display = 'flex';
+    } else {
+      sleeveRubberColorPreview.style.display = 'none';
+    }
+  });
+}
+
 // إرسال النموذج
 const form = document.getElementById('jacketOrderForm');
 const successPage = document.getElementById('successPage');
 form.addEventListener('submit', function(e) {
   e.preventDefault();
-  if (phoneInput.classList.contains('invalid')) return;
+  if (phoneNumberInput.classList.contains('invalid')) return;
   if (teamMembersInput.required && teamMembersInput.classList.contains('invalid')) return;
   const promoVisible = promoFields.style.display === 'block';
   if (promoVisible) {
     const jacketColorChecked = document.querySelector('input[name="لون الجاكيت"]:checked');
     const sleeveColorChecked = document.querySelector('input[name="لون الأكمام"]:checked');
-    const sleeveRubberColorChecked = document.querySelector('input[name="لون رباط الأكمام"]:checked');
-    if (!jacketColorChecked || !sleeveColorChecked || !sleeveRubberColorChecked) {
+    // For the dropdown, check if a value is selected
+    if (!jacketColorChecked || !sleeveColorChecked || !sleeveRubberColorSelect.value) {
       alert('يرجى اختيار لون الجاكيت ولون الأكمام ولون رباط الأكمام');
       return;
     }
@@ -98,18 +122,27 @@ form.addEventListener('submit', function(e) {
   const orderObj = {};
   form.querySelectorAll('input, select, textarea').forEach(el => {
     if ((el.type === 'radio' && el.checked) || (el.type !== 'radio' && el.type !== 'checkbox')) {
-      orderObj[el.name] = el.value;
+      if (el.name === 'رقم الجوال') return; // skip, we'll add full phone below
+      if (el.name === 'لون رباط الأكمام') {
+        // Use the label, not the filename
+        const selectedOption = el.options[el.selectedIndex];
+        orderObj[el.name] = selectedOption ? selectedOption.text : el.value;
+      } else {
+        orderObj[el.name] = el.value;
+      }
     }
   });
+  orderObj['رقم الجوال'] = getFullPhoneNumber();
   formData.append('order_json', JSON.stringify(orderObj));
 
-  fetch('https://n8n.srv886746.hstgr.cloud/webhook/860b7952-4e3d-45d9-8d00-52b759909d72', {
+  fetch('https://n8n.srv886746.hstgr.cloud/webhook-test/860b7952-4e3d-45d9-8d00-52b759909d72', {
     method: 'POST',
     body: formData
   })
   .then(res => {
     if (res.ok) {
       form.style.display = 'none';
+      document.querySelector('header').style.display = 'none';
       successPage.style.display = 'block';
     } else {
       alert('حدث خطأ أثناء الإرسال. حاول مرة أخرى.');
