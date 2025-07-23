@@ -35,6 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   setupAdditionComment('freeAdd2', 'freeAdd2Comment');
   setupAdditionComment('paidAdd1', 'paidAdd1Comment');
+  // Show/hide paidAdd1 image field as well
+  const paidAdd1Checkbox = document.getElementById('paidAdd1');
+  const paidAdd1Image = document.getElementById('paidAdd1Image');
+  if (paidAdd1Checkbox && paidAdd1Image) {
+    paidAdd1Checkbox.addEventListener('change', function() {
+      paidAdd1Image.style.display = paidAdd1Checkbox.checked ? '' : 'none';
+    });
+  }
   setupAdditionComment('paidAdd2', 'paidAdd2Comment');
 
   // Price calculation
@@ -43,16 +51,21 @@ document.addEventListener('DOMContentLoaded', function() {
     let price = 255;
     // Designs that are free
     const freeDesigns = [3, 7, 11];
+    // Designs that are 20 SAR
+    const twentySarDesigns = [6, 10];
     for (let i = 1; i <= 11; i++) {
       const enableBox = document.getElementById(`enable${i}`);
       if (enableBox && enableBox.checked && !freeDesigns.includes(i)) {
-        price += 10;
+        if (twentySarDesigns.includes(i)) {
+          price += 20;
+        } else {
+          price += 10;
+        }
       }
     }
     // Paid additions
     const paidAdditions = [
       { id: 'paidAdd1', amount: 35 },
-      { id: 'paidAdd2', amount: 20 },
       { id: 'paidAdd3', amount: 35 },
       { id: 'paidAdd4', amount: 50 }
     ];
@@ -184,23 +197,23 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     // Send paid additions
-    for (let i = 1; i <= 4; i++) {
+    [1, 3, 4].forEach(i => {
       const checkbox = document.getElementById(`paidAdd${i}`);
       if (checkbox && checkbox.checked) {
         formData.append(`paidAdd${i}`, 'on');
         if (i === 1) {
           const commentInput = document.getElementById('paidAdd1Comment');
           formData.append('paidAdd1Comment', commentInput ? commentInput.value : '');
-        }
-        if (i === 2) {
-          const commentInput = document.getElementById('paidAdd2Comment');
-          formData.append('paidAdd2Comment', commentInput ? commentInput.value : '');
+          const imageInput = document.getElementById('paidAdd1Image');
+          if (imageInput && imageInput.files.length > 0) {
+            formData.append('paidAdd1Image', imageInput.files[0]);
+          }
         }
       }
-    }
+    });
     // Send final price
     formData.append('finalPrice', document.getElementById('price').textContent);
-    fetch('https://n8n.srv886746.hstgr.cloud/webhook/90dc21c8-a49e-4f6a-8bef-183adddb6f47', {
+    fetch('https://n8n.srv886746.hstgr.cloud/webhook-test/90dc21c8-a49e-4f6a-8bef-183adddb6f47', {
       method: 'POST',
       body: formData
     })
