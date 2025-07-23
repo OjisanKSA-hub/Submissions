@@ -1,5 +1,6 @@
 // Populate team code from URL query string (e.g., ?team=1234)
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('JS loaded');
   const urlParams = new URLSearchParams(window.location.search);
   const teamCode = urlParams.get('team') || '';
   document.getElementById('teamCode').value = teamCode;
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   for (let i = 1; i <= 11; i++) {
     const enableBox = document.getElementById(`enable${i}`);
     const uploadFields = document.querySelector(`#upload-row-${i} .upload-fields`);
+    if (!enableBox || !uploadFields) continue;
     enableBox.addEventListener('change', function() {
       if (enableBox.checked) {
         uploadFields.style.display = '';
@@ -21,21 +23,55 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Show/hide comment fields for additions
+  function setupAdditionComment(checkboxId, commentId) {
+    const checkbox = document.getElementById(checkboxId);
+    const comment = document.getElementById(commentId);
+    if (checkbox && comment) {
+      checkbox.addEventListener('change', function() {
+        comment.style.display = checkbox.checked ? '' : 'none';
+      });
+    }
+  }
+  setupAdditionComment('freeAdd2', 'freeAdd2Comment');
+  setupAdditionComment('paidAdd1', 'paidAdd1Comment');
+  setupAdditionComment('paidAdd2', 'paidAdd2Comment');
+
   // Price calculation
   const priceSpan = document.getElementById('price');
   function updatePrice() {
-    let count = 0;
+    let price = 255;
+    // Designs that are free
+    const freeDesigns = [3, 7, 11];
     for (let i = 1; i <= 11; i++) {
       const enableBox = document.getElementById(`enable${i}`);
-      if (enableBox && enableBox.checked) count++;
+      if (enableBox && enableBox.checked && !freeDesigns.includes(i)) {
+        price += 10;
+      }
     }
-    // Base price 100 SAR, first 3 images free, from 4th image each adds 25 SAR
-    let price = 255;
-    if (count > 3) {
-      price += (count - 3) * 10;
-    }
+    // Paid additions
+    const paidAdditions = [
+      { id: 'paidAdd1', amount: 35 },
+      { id: 'paidAdd2', amount: 20 },
+      { id: 'paidAdd3', amount: 35 },
+      { id: 'paidAdd4', amount: 50 }
+    ];
+    paidAdditions.forEach(add => {
+      const checkbox = document.getElementById(add.id);
+      if (checkbox && checkbox.checked) {
+        price += add.amount;
+      }
+    });
     priceSpan.textContent = price;
   }
+
+  // Add event listeners for paid additions to update price
+  ['paidAdd1','paidAdd2','paidAdd3','paidAdd4','freeAdd1','freeAdd2','freeAdd3','freeAdd4'].forEach(id => {
+    const checkbox = document.getElementById(id);
+    if (checkbox) {
+      checkbox.addEventListener('change', updatePrice);
+    }
+  });
   updatePrice();
 
   // Color swatch selection logic
@@ -80,63 +116,97 @@ document.addEventListener('DOMContentLoaded', function() {
   setupColorCheckpoint('jacketColor', 'jacketColorCheckpoint');
   setupColorCheckpoint('sleeveColor', 'sleeveColorCheckpoint');
 
-  // Sleeve rubber color preview logic (rebuilt)
+  // Sleeve rubber color preview logic (minimal, robust)
   const sleeveRubberSelect = document.getElementById('sleeveRubberColorSelect');
   const sleeveRubberPreview = document.getElementById('sleeveRubberColorPreview');
   const sleeveRubberImg = document.getElementById('sleeveRubberColorImg');
   const sleeveRubberLabel = document.getElementById('sleeveRubberColorLabel');
+  console.log('sleeveRubberSelect:', sleeveRubberSelect);
   if (sleeveRubberSelect) {
-    sleeveRubberSelect.addEventListener('change', function() {
+    function updateSleeveRubberPreview() {
+      console.log('Event handler triggered');
       const selected = sleeveRubberSelect.options[sleeveRubberSelect.selectedIndex];
       if (sleeveRubberSelect.value) {
         sleeveRubberImg.src = sleeveRubberSelect.value;
+        sleeveRubberImg.style.display = 'block';
         sleeveRubberLabel.textContent = selected.text;
         sleeveRubberPreview.style.display = 'flex';
+        console.log('Previewing image:', sleeveRubberSelect.value);
       } else {
         sleeveRubberPreview.style.display = 'none';
         sleeveRubberImg.src = '';
         sleeveRubberLabel.textContent = '';
+        console.log('No sleeve rubber color selected');
       }
-    });
-    // Show preview if already selected (e.g. after reload)
-    if (sleeveRubberSelect.value) {
-      const selected = sleeveRubberSelect.options[sleeveRubberSelect.selectedIndex];
-      sleeveRubberImg.src = sleeveRubberSelect.value;
-      sleeveRubberLabel.textContent = selected.text;
-      sleeveRubberPreview.style.display = 'flex';
     }
+    sleeveRubberSelect.addEventListener('change', updateSleeveRubberPreview);
+    // No preview on load, only after user selects
   }
 
   // Form submission: send as FormData to n8n webhook
   document.getElementById('jacketForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('teamCode', document.getElementById('teamCode').value);
-    formData.append('name', document.getElementById('name').value);
-    formData.append('phoneCountry', document.getElementById('phoneCountry').value);
-    formData.append('phone', document.getElementById('phone').value);
-    formData.append('jacketName', document.getElementById('jacketName').value);
-    formData.append('size', document.getElementById('size').value);
-    formData.append('jacketColor', document.getElementById('jacketColor').value);
-    formData.append('sleeveColor', document.getElementById('sleeveColor').value);
-    formData.append('sleeveRubberColor', document.getElementById('sleeveRubberColor').value);
+    const getValue = id => {
+      const el = document.getElementById(id);
+      return el ? el.value : '';
+    };
+    formData.append('teamCode', getValue('teamCode'));
+    formData.append('name', getValue('name'));
+    formData.append('phoneCountry', getValue('phoneCountry'));
+    formData.append('phone', getValue('phone'));
+    formData.append('jacketName', getValue('jacketName'));
+    formData.append('size', getValue('size'));
+    formData.append('jacketColor', getValue('jacketColor'));
+    formData.append('sleeveColor', getValue('sleeveColor'));
+    formData.append('sleeveRubberColor', getValue('sleeveRubberColor'));
+    // Send selected designs
     for (let i = 1; i <= 11; i++) {
-      if (document.getElementById(`enable${i}`).checked) {
+      if (document.getElementById(`enable${i}`) && document.getElementById(`enable${i}`).checked) {
         const fileInput = document.getElementById(`image${i}`);
-        const comment = document.getElementsByName(`comment${i}`)[0].value;
-        if (fileInput.files.length > 0) {
+        const commentInput = document.getElementsByName(`comment${i}`)[0];
+        const comment = commentInput ? commentInput.value : '';
+        if (fileInput && fileInput.files.length > 0) {
           formData.append(`image${i}`, fileInput.files[0]);
         }
         formData.append(`comment${i}`, comment);
       }
     }
-    fetch('https://n8n.srv886746.hstgr.cloud/webhook-test/70598a9b-fe09-4b8b-8311-7e310db53ba8', {
+    // Send free additions
+    for (let i = 1; i <= 3; i++) {
+      const checkbox = document.getElementById(`freeAdd${i}`);
+      if (checkbox && checkbox.checked) {
+        formData.append(`freeAdd${i}`, 'on');
+        if (i === 2) {
+          const commentInput = document.getElementById('freeAdd2Comment');
+          formData.append('freeAdd2Comment', commentInput ? commentInput.value : '');
+        }
+      }
+    }
+    // Send paid additions
+    for (let i = 1; i <= 4; i++) {
+      const checkbox = document.getElementById(`paidAdd${i}`);
+      if (checkbox && checkbox.checked) {
+        formData.append(`paidAdd${i}`, 'on');
+        if (i === 1) {
+          const commentInput = document.getElementById('paidAdd1Comment');
+          formData.append('paidAdd1Comment', commentInput ? commentInput.value : '');
+        }
+        if (i === 2) {
+          const commentInput = document.getElementById('paidAdd2Comment');
+          formData.append('paidAdd2Comment', commentInput ? commentInput.value : '');
+        }
+      }
+    }
+    // Send final price
+    formData.append('finalPrice', document.getElementById('price').textContent);
+    fetch('https://n8n.srv886746.hstgr.cloud/webhook/90dc21c8-a49e-4f6a-8bef-183adddb6f47', {
       method: 'POST',
       body: formData
     })
     .then(res => {
       if (res.ok) {
-        alert('تم إرسال الطلب بنجاح!');
+        window.location.href = 'success.html';
       } else {
         alert('حدث خطأ أثناء الإرسال.');
       }
