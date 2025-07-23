@@ -48,10 +48,6 @@
           <input type="tel" id="phone" name="phone" required pattern="^[0-9]{6,}$" placeholder="مثال: 50123456">
         </div>
         <div class="form-group">
-          <label for="jacketName">الاسم بالخلف</label>
-          <input type="text" id="jacketName" name="jacketName" required>
-        </div>
-        <div class="form-group">
           <label for="size">المقاس</label>
           <select id="size" name="size" required>
             <option value="">اختر المقاس</option>
@@ -183,7 +179,7 @@
           </div>
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-6">
-              <label>6 (كم أيمن) (10 ريال):</label>
+              <label>6 (كم أيمن) (20 ريال):</label>
               <input type="checkbox" id="enable6" name="enable6">
               <span>أرغب في رفع صورة</span>
               <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
@@ -236,7 +232,7 @@
           </div>
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-10">
-              <label>10 (كم أيسر) (10 ريال):</label>
+              <label>10 (كم أيسر) (20 ريال):</label>
               <input type="checkbox" id="enable10" name="enable10">
               <span>أرغب في رفع صورة</span>
               <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
@@ -250,6 +246,10 @@
       <div class="jacket-design-upload-section">
         <div class="jacket-back-preview" style="text-align:center; margin-bottom:18px;">
           <img src="jacket-back.jpg" alt="جاكيت خلفي" style="max-width:180px; width:100%; border-radius:12px; box-shadow:0 2px 8px #e573a7aa;">
+        </div>
+        <div class="form-group">
+          <label for="jacketName">الاسم بالخلف</label>
+          <input type="text" id="jacketName" name="jacketName" required>
         </div>
         <div class="jacket-upload-columns">
           <div class="jacket-upload-col">
@@ -274,8 +274,7 @@
         </div>
         <div class="additions-section paid-additions" style="flex: 1 1 300px; min-width: 220px; background: #fff0f6; border-radius: 16px; padding: 18px 16px;">
           <div style="font-weight:bold; color:#d72660; margin-bottom:10px; font-size:1.1em;">الإضافات المدفوعة:</div>
-          <div class="addition-item" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:8px;"><input type="checkbox" id="paidAdd1" name="paidAdd1" data-price="35"><label for="paidAdd1" style="margin:0;">تطريز بطانة <span style="color:#d72660;">35 ريال</span></label><input type="text" id="paidAdd1Comment" name="paidAdd1Comment" placeholder="تعليق (اختياري)" style="display:none; margin-right:8px; width:60%;"></div>
-          <div class="addition-item" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:8px;"><input type="checkbox" id="paidAdd2" name="paidAdd2" data-price="20"><label for="paidAdd2" style="margin:0;">تطريز عند المعصم <span style="color:#d72660;">20 ريال</span></label><input type="text" id="paidAdd2Comment" name="paidAdd2Comment" placeholder="تعليق (اختياري)" style="display:none; margin-right:8px; width:60%;"></div>
+          <div class="addition-item" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:8px;"><input type="checkbox" id="paidAdd1" name="paidAdd1" data-price="35"><label for="paidAdd1" style="margin:0;">تطريز بطانة <span style="color:#d72660;">35 ريال</span></label><input type="text" id="paidAdd1Comment" name="paidAdd1Comment" placeholder="تعليق (اختياري)" style="display:none; margin-right:8px; width:30%;"><input type="file" accept="image/*" id="paidAdd1Image" name="paidAdd1Image" style="display:none; margin-right:8px; width:30%;"></div>
           <div class="addition-item" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:8px;"><input type="checkbox" id="paidAdd3" name="paidAdd3" data-price="35"><label for="paidAdd3" style="margin:0;">قبعة ثابتة <span style="color:#d72660;">35 ريال</span></label></div>
           <div class="addition-item" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:8px;"><input type="checkbox" id="paidAdd4" name="paidAdd4" data-price="50"><label for="paidAdd4" style="margin:0;">جلد كامل للجاكيت <span style="color:#d72660;">50 ريال</span></label></div>
         </div>
