@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     formData.append('phone', getValue('phone'));
     formData.append('jacketName', getValue('jacketName'));
     formData.append('size', getValue('size'));
+    formData.append('sleeveType', getValue('sleeveType'));
     formData.append('jacketColor', getValue('jacketColor'));
     formData.append('sleeveColor', getValue('sleeveColor'));
     formData.append('sleeveRubberColor', getValue('sleeveRubberColor'));
