@@ -64,6 +64,14 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="sleeveType">نوع الأكمام</label>
+          <select id="sleeveType" name="sleeveType" required>
+            <option value="">اختر نوع الأكمام</option>
+            <option value="cotton">قطن</option>
+            <option value="leather">جلد</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label style="display:block; text-align:right; color:#d72660; font-weight:bold;">لون الجاكيت</label>
           <div class="color-radio-group jacket-colors" style="justify-content: flex-end;">
             <label class="color-radio"><input type="radio" name="jacketColor" value="#ffffff" required><span class="color-dot" style="background:#fff; border:1px solid #d72660;"></span> أبيض</label>
@@ -270,7 +278,6 @@
           <div style="font-weight:bold; color:#2e7d32; margin-bottom:10px; font-size:1.1em;">الاضافات المجانية المشمولة بالسعر:</div>
           <div class="addition-item" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:8px;"><input type="checkbox" id="freeAdd1" name="freeAdd1"><label for="freeAdd1" style="margin:0;">جيب مخفي</label></div>
           <div class="addition-item" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:8px;"><input type="checkbox" id="freeAdd2" name="freeAdd2"><label for="freeAdd2" style="margin:0;">بطانة داخلية سادة</label><input type="text" id="freeAdd2Comment" name="freeAdd2Comment" placeholder="تعليق (اختياري)" style="display:none; margin-right:8px; width:60%;"></div>
-          <div class="addition-item" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:8px;"><input type="checkbox" id="freeAdd3" name="freeAdd3"><label for="freeAdd3" style="margin:0;">أكمام جلد</label></div>
         </div>
         <div class="additions-section paid-additions" style="flex: 1 1 300px; min-width: 220px; background: #fff0f6; border-radius: 16px; padding: 18px 16px;">
           <div style="font-weight:bold; color:#d72660; margin-bottom:10px; font-size:1.1em;">الإضافات المدفوعة:</div>
