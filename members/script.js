@@ -187,10 +187,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     // Send free additions
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 2; i++) {
       const checkbox = document.getElementById(`freeAdd${i}`);
       if (checkbox && checkbox.checked) {
-        formData.append(`freeAdd${i}`, 'on');
+        const label = document.querySelector(`label[for='freeAdd${i}']`);
+        formData.append(`freeAdd${i}`, label ? label.textContent.trim() : '');
         if (i === 2) {
           const commentInput = document.getElementById('freeAdd2Comment');
           formData.append('freeAdd2Comment', commentInput ? commentInput.value : '');
@@ -201,7 +202,8 @@ document.addEventListener('DOMContentLoaded', function() {
     [1, 3, 4].forEach(i => {
       const checkbox = document.getElementById(`paidAdd${i}`);
       if (checkbox && checkbox.checked) {
-        formData.append(`paidAdd${i}`, 'on');
+        const label = document.querySelector(`label[for='paidAdd${i}']`);
+        formData.append(`paidAdd${i}`, label ? label.textContent.trim() : '');
         if (i === 1) {
           const commentInput = document.getElementById('paidAdd1Comment');
           formData.append('paidAdd1Comment', commentInput ? commentInput.value : '');
