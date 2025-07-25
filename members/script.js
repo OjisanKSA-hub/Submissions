@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // Send final price
     formData.append('finalPrice', document.getElementById('price').textContent);
-    fetch('https://n8n.srv886746.hstgr.cloud/webhook-test/90dc21c8-a49e-4f6a-8bef-183adddb6f47', {
+    fetch('https://n8n.srv886746.hstgr.cloud/webhook-test/65a04cc8-3a8a-44d7-89a4-81bd2c8ef254', {
       method: 'POST',
       body: formData
     })
