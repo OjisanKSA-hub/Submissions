@@ -32,14 +32,14 @@ orderTypeRadios.forEach(radio => {
       promoFields.style.display = 'block';
       document.querySelectorAll('input[name="لون الجاكيت"]').forEach(i => i.required = true);
       document.querySelectorAll('input[name="لون الأكمام"]').forEach(i => i.required = true);
-      document.querySelectorAll('input[name="لون رباط الأكمام"]').forEach(i => i.required = true);
+      document.querySelectorAll('select[name="لون مطاط الأكمام"]').forEach(i => i.required = true);
       document.getElementById('backDesign').required = true;
       if (backExampleBox) backExampleBox.style.display = 'flex';
     } else {
       promoFields.style.display = 'none';
       document.querySelectorAll('input[name="لون الجاكيت"]').forEach(i => i.required = false);
       document.querySelectorAll('input[name="لون الأكمام"]').forEach(i => i.required = false);
-      document.querySelectorAll('input[name="لون رباط الأكمام"]').forEach(i => i.required = false);
+      document.querySelectorAll('select[name="لون مطاط الأكمام"]').forEach(i => i.required = false);
       document.getElementById('backDesign').required = false;
       if (backExampleBox) backExampleBox.style.display = 'none';
     }
@@ -67,7 +67,7 @@ phoneNumberInput.addEventListener('input', function() {
   }
 });
 
-// التحقق من عدد أعضاء الفريق
+// التحقق من عدد أعضاء المجموعة
 teamMembersInput.addEventListener('input', function() {
   const val = parseInt(teamMembersInput.value, 10);
   const min = parseInt(teamMembersInput.min, 10);
@@ -112,7 +112,7 @@ form.addEventListener('submit', function(e) {
     const sleeveColorChecked = document.querySelector('input[name="لون الأكمام"]:checked');
     // For the dropdown, check if a value is selected
     if (!jacketColorChecked || !sleeveColorChecked || !sleeveRubberColorSelect.value) {
-      alert('يرجى اختيار لون الجاكيت ولون الأكمام ولون رباط الأكمام');
+      alert('يرجى اختيار لون الجاكيت ولون الأكمام ولون مطاط الأكمام');
       return;
     }
   }
@@ -123,7 +123,7 @@ form.addEventListener('submit', function(e) {
   form.querySelectorAll('input, select, textarea').forEach(el => {
     if ((el.type === 'radio' && el.checked) || (el.type !== 'radio' && el.type !== 'checkbox')) {
       if (el.name === 'رقم الجوال') return; // skip, we'll add full phone below
-      if (el.name === 'لون رباط الأكمام') {
+      if (el.name === 'لون مطاط الأكمام') {
         // Use the label, not the filename
         const selectedOption = el.options[el.selectedIndex];
         orderObj[el.name] = selectedOption ? selectedOption.text : el.value;
