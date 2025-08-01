@@ -164,6 +164,15 @@ document.addEventListener('DOMContentLoaded', function() {
       const el = document.getElementById(id);
       return el ? el.value : '';
     };
+    const getRadioValue = name => {
+      const radios = document.getElementsByName(name);
+      for (let radio of radios) {
+        if (radio.checked) {
+          return radio.value;
+        }
+      }
+      return '';
+    };
     formData.append('teamCode', getValue('teamCode'));
     formData.append('name', getValue('name'));
     formData.append('phoneCountry', getValue('phoneCountry'));
@@ -171,9 +180,9 @@ document.addEventListener('DOMContentLoaded', function() {
     formData.append('jacketName', getValue('jacketName'));
     formData.append('size', getValue('size'));
     formData.append('sleeveType', getValue('sleeveType'));
-    formData.append('jacketColor', getValue('jacketColor'));
-    formData.append('sleeveColor', getValue('sleeveColor'));
-    formData.append('sleeveRubberColor', getValue('sleeveRubberColor'));
+    formData.append('jacketColor', getRadioValue('jacketColor'));
+    formData.append('sleeveColor', getRadioValue('sleeveColor'));
+    formData.append('sleeveRubberColor', getValue('sleeveRubberColorSelect'));
     // Send selected designs
     for (let i = 1; i <= 11; i++) {
       if (document.getElementById(`enable${i}`) && document.getElementById(`enable${i}`).checked) {
