@@ -135,7 +135,7 @@ form.addEventListener('submit', function(e) {
   orderObj['رقم الجوال'] = getFullPhoneNumber();
   formData.append('order_json', JSON.stringify(orderObj));
 
-  fetch('https://n8n.srv886746.hstgr.cloud/webhook-test/fcd37d22-69da-4846-8718-ff4e4c6d7d57', {
+  fetch('https://n8n.srv886746.hstgr.cloud/webhook/fcd37d22-69da-4846-8718-ff4e4c6d7d57', {
     method: 'POST',
     body: formData
   })
