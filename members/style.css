@@ -277,7 +277,7 @@ select:focus {
 .sleeve-rubber-preview {
   margin-top: 0.8rem;
   background: #fff0f6;
-  border: 2px solid #e573a7;
+  border: 3px solid #d72660;
   border-radius: 16px;
   padding: 1rem;
   display: flex;
@@ -285,6 +285,14 @@ select:focus {
   align-items: center;
   max-width: 160px;
   transition: all 0.3s ease;
+  /* Ensure visibility when shown */
+  visibility: visible;
+  opacity: 1;
+  /* Force visibility */
+  position: relative;
+  z-index: 10;
+  /* Debug border */
+  box-shadow: 0 0 10px rgba(215, 38, 96, 0.5);
 }
 
 .sleeve-rubber-preview:hover {
@@ -298,6 +306,8 @@ select:focus {
   display: block;
   margin-bottom: 0.5rem;
   border-radius: 8px;
+  /* Ensure image is visible */
+  border: 1px solid #d72660;
 }
 
 .sleeve-rubber-preview div {
