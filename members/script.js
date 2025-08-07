@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!enableBox || !uploadFields) continue;
     enableBox.addEventListener('change', function() {
       if (enableBox.checked) {
-        uploadFields.style.display = '';
+        uploadFields.classList.add('show');
       } else {
-        uploadFields.style.display = 'none';
+        uploadFields.classList.remove('show');
         // Clear file and comment if unchecked
         document.getElementById(`image${i}`).value = '';
         document.getElementsByName(`comment${i}`)[0].value = '';
@@ -138,13 +138,16 @@ document.addEventListener('DOMContentLoaded', function() {
   if (sleeveRubberSelect) {
     function updateSleeveRubberPreview() {
       console.log('Event handler triggered');
-      const selected = sleeveRubberSelect.options[sleeveRubberSelect.selectedIndex];
+      const selectedOption = sleeveRubberSelect.options[sleeveRubberSelect.selectedIndex];
       if (sleeveRubberSelect.value) {
-        sleeveRubberImg.src = sleeveRubberSelect.value;
+        const imagePath = selectedOption.getAttribute('data-image');
+        if (imagePath) {
+          sleeveRubberImg.src = imagePath;
+        }
         sleeveRubberImg.style.display = 'block';
-        sleeveRubberLabel.textContent = selected.text;
+        sleeveRubberLabel.textContent = selectedOption.text;
         sleeveRubberPreview.style.display = 'flex';
-        console.log('Previewing image:', sleeveRubberSelect.value);
+        console.log('Previewing image:', imagePath);
       } else {
         sleeveRubberPreview.style.display = 'none';
         sleeveRubberImg.src = '';
