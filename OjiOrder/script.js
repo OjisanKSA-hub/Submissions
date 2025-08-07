@@ -90,7 +90,11 @@ if (sleeveRubberColorSelect) {
   sleeveRubberColorSelect.addEventListener('change', function() {
     const selectedOption = sleeveRubberColorSelect.options[sleeveRubberColorSelect.selectedIndex];
     if (sleeveRubberColorSelect.value) {
-      sleeveRubberColorImg.src = sleeveRubberColorSelect.value;
+      // Use the data-image attribute for the preview image
+      const imagePath = selectedOption.getAttribute('data-image');
+      if (imagePath) {
+        sleeveRubberColorImg.src = imagePath;
+      }
       sleeveRubberColorLabel.textContent = selectedOption.text;
       sleeveRubberColorPreview.style.display = 'flex';
     } else {
@@ -123,13 +127,8 @@ form.addEventListener('submit', function(e) {
   form.querySelectorAll('input, select, textarea').forEach(el => {
     if ((el.type === 'radio' && el.checked) || (el.type !== 'radio' && el.type !== 'checkbox')) {
       if (el.name === 'رقم الجوال') return; // skip, we'll add full phone below
-      if (el.name === 'لون مطاط الأكمام') {
-        // Use the label, not the filename
-        const selectedOption = el.options[el.selectedIndex];
-        orderObj[el.name] = selectedOption ? selectedOption.text : el.value;
-      } else {
-        orderObj[el.name] = el.value;
-      }
+      // For sleeve rubber color, use the value directly (now it's Arabic text)
+      orderObj[el.name] = el.value;
     }
   });
   orderObj['رقم الجوال'] = getFullPhoneNumber();

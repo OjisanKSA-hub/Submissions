@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نموذج طلب جاكيت - متجر أوجيسان</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,7 +25,7 @@
         <label for="phoneNumber">رقم الجوال</label>
         <div class="phone-fields">
           <select id="countryCode" name="رمز الدولة" required>
-            <option value="+966">السعودية ��🇦 (+966)</option>
+            <option value="+966">السعودية 🇸🇦 (+966)</option>
             <option value="+971">الإمارات 🇦🇪 (+971)</option>
             <option value="+965">الكويت 🇰🇼 (+965)</option>
             <option value="+974">قطر 🇶🇦 (+974)</option>
@@ -83,18 +86,18 @@
           <label>لون مطاط الأكمام</label>
           <select id="sleeveRubberColorSelect" name="لون مطاط الأكمام" required>
             <option value="" disabled selected>اختر لون مطاط الأكمام</option>
-            <option value="Black-2-blue.png">أسود مع خطين أزرق</option>
-            <option value="Black-2-grey.png">أسود مع خطين رمادي</option>
-            <option value="Black-2-maroon.png">أسود مع خطين عنابي</option>
-            <option value="Black-2-move.png">أسود مع خطين بنفسجي</option>
-            <option value="Black-2-red.png">أسود مع خطين أحمر</option>
-            <option value="Black-2-white.png">أسود مع خطين أبيض</option>
-            <option value="Black-green.png">أسود مع خط أخضر</option>
-            <option value="Navy.png">كحلي</option>
-            <option value="Navy-2-white.png">كحلي مع خطين أبيض</option>
-            <option value="Pink-2-white.png">وردي مع خطين أبيض</option>
-            <option value="White-2-blue.png">أبيض مع خطين أزرق</option>
-            <option value="White-2-gold.png">أبيض مع خطين ذهبي</option>
+            <option value="أسود مع خطين أزرق" data-image="Black-2-blue.png">أسود مع خطين أزرق</option>
+            <option value="أسود مع خطين رمادي" data-image="Black-2-grey.png">أسود مع خطين رمادي</option>
+            <option value="أسود مع خطين عنابي" data-image="Black-2-maroon.png">أسود مع خطين عنابي</option>
+            <option value="أسود مع خطين بنفسجي" data-image="Black-2-move.png">أسود مع خطين بنفسجي</option>
+            <option value="أسود مع خطين أحمر" data-image="Black-2-red.png">أسود مع خطين أحمر</option>
+            <option value="أسود مع خطين أبيض" data-image="Black-2-white.png">أسود مع خطين أبيض</option>
+            <option value="أسود مع خط أخضر" data-image="Black-green.png">أسود مع خط أخضر</option>
+            <option value="كحلي" data-image="Navy.png">كحلي</option>
+            <option value="كحلي مع خطين أبيض" data-image="Navy-2-white.png">كحلي مع خطين أبيض</option>
+            <option value="وردي مع خطين أبيض" data-image="Pink-2-white.png">وردي مع خطين أبيض</option>
+            <option value="أبيض مع خطين أزرق" data-image="White-2-blue.png">أبيض مع خطين أزرق</option>
+            <option value="أبيض مع خطين ذهبي" data-image="White-2-gold.png">أبيض مع خطين ذهبي</option>
           </select>
           <div id="sleeveRubberColorPreview" class="sleeve-rubber-preview" style="display:none">
             <img src="" alt="معاينة لون مطاط الأكمام" id="sleeveRubberColorImg">
