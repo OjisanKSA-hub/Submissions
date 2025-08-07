@@ -87,76 +87,50 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   updatePrice();
 
-  // Color swatch selection logic
-  function setupColorSwatches(swatchContainerId, inputId) {
-    const container = document.getElementById(swatchContainerId);
-    if (!container) return;
-    const input = document.getElementById(inputId);
-    const swatches = container.querySelectorAll('.color-swatch');
-    function selectSwatch(color) {
-      input.value = color;
-      swatches.forEach(btn => {
-        if (btn.getAttribute('data-color') === color) {
-          btn.classList.add('selected');
-        } else {
-          btn.classList.remove('selected');
-        }
-      });
-    }
-    swatches.forEach(btn => {
-      btn.addEventListener('click', function() {
-        selectSwatch(btn.getAttribute('data-color'));
-      });
-    });
-    // Set initial selection
-    selectSwatch(input.value);
-  }
-  setupColorSwatches('jacketColorSwatches', 'jacketColor');
-  setupColorSwatches('sleeveColorSwatches', 'sleeveColor');
-
-  // Show checkpoint when color is selected
-  function setupColorCheckpoint(radioName, checkpointId) {
+  // Color selection logic for radio buttons
+  function setupColorSelection(radioName) {
     const radios = document.getElementsByName(radioName);
-    const checkpoint = document.getElementById(checkpointId);
-    function updateCheckpoint() {
-      let checked = false;
-      radios.forEach ? radios.forEach(r => { if (r.checked) checked = true; }) : Array.from(radios).forEach(r => { if (r.checked) checked = true; });
-      checkpoint.style.display = checked ? '' : 'none';
+    if (radios.length > 0) {
+      // Add visual feedback for selected colors
+      radios.forEach(radio => {
+        radio.addEventListener('change', function() {
+          // Remove selected class from all swatches in this group
+          const allSwatches = document.querySelectorAll(`input[name="${radioName}"]`);
+          allSwatches.forEach(swatch => {
+            swatch.closest('.color-swatch').classList.remove('selected');
+          });
+          // Add selected class to the checked one
+          if (this.checked) {
+            this.closest('.color-swatch').classList.add('selected');
+          }
+        });
+      });
     }
-    radios.forEach ? radios.forEach(r => r.addEventListener('change', updateCheckpoint)) : Array.from(radios).forEach(r => r.addEventListener('change', updateCheckpoint));
-    updateCheckpoint();
   }
-  setupColorCheckpoint('jacketColor', 'jacketColorCheckpoint');
-  setupColorCheckpoint('sleeveColor', 'sleeveColorCheckpoint');
+  setupColorSelection('jacketColor');
+  setupColorSelection('sleeveColor');
 
-  // Sleeve rubber color preview logic (minimal, robust)
+  // Sleeve rubber color preview logic (simple, like OjiOrder)
   const sleeveRubberSelect = document.getElementById('sleeveRubberColorSelect');
   const sleeveRubberPreview = document.getElementById('sleeveRubberColorPreview');
   const sleeveRubberImg = document.getElementById('sleeveRubberColorImg');
   const sleeveRubberLabel = document.getElementById('sleeveRubberColorLabel');
-  console.log('sleeveRubberSelect:', sleeveRubberSelect);
+
   if (sleeveRubberSelect) {
-    function updateSleeveRubberPreview() {
-      console.log('Event handler triggered');
+    sleeveRubberSelect.addEventListener('change', function() {
       const selectedOption = sleeveRubberSelect.options[sleeveRubberSelect.selectedIndex];
       if (sleeveRubberSelect.value) {
+        // Use the data-image attribute for the preview image
         const imagePath = selectedOption.getAttribute('data-image');
         if (imagePath) {
           sleeveRubberImg.src = imagePath;
         }
-        sleeveRubberImg.style.display = 'block';
         sleeveRubberLabel.textContent = selectedOption.text;
         sleeveRubberPreview.style.display = 'flex';
-        console.log('Previewing image:', imagePath);
       } else {
         sleeveRubberPreview.style.display = 'none';
-        sleeveRubberImg.src = '';
-        sleeveRubberLabel.textContent = '';
-        console.log('No sleeve rubber color selected');
       }
-    }
-    sleeveRubberSelect.addEventListener('change', updateSleeveRubberPreview);
-    // No preview on load, only after user selects
+    });
   }
 
   // Form submission: send as FormData to n8n webhook
