@@ -8,16 +8,31 @@ document.addEventListener('DOMContentLoaded', function() {
   for (let i = 1; i <= 9; i++) {
     const enableBox = document.getElementById(`enable${i}`);
     const uploadFields = document.querySelector(`#upload-row-${i} .upload-fields`);
+    const fileInput = document.getElementById(`image${i}`);
+    
     enableBox.addEventListener('change', function() {
       if (enableBox.checked) {
-        uploadFields.style.display = '';
+        uploadFields.classList.add('show');
       } else {
-        uploadFields.style.display = 'none';
+        uploadFields.classList.remove('show');
         // Clear file and comment if unchecked
-        document.getElementById(`image${i}`).value = '';
+        fileInput.value = '';
         document.getElementsByName(`comment${i}`)[0].value = '';
       }
       updatePrice();
+    });
+    
+    // File size validation (10MB max)
+    fileInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+        if (file.size > maxSize) {
+          alert(`حجم الملف كبير جداً. الحد الأقصى هو 10 ميجابايت.`);
+          this.value = ''; // Clear the file input
+          return;
+        }
+      }
     });
   }
 
