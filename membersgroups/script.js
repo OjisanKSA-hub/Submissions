@@ -6,15 +6,15 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('teamCode').value = teamCode;
 
   // Show/hide upload fields based on checkbox
-  for (let i = 1; i <= 10; i++) { // changed from 11 to 10
+  for (let i = 1; i <= 10; i++) {
     const enableBox = document.getElementById(`enable${i}`);
     const uploadFields = document.querySelector(`#upload-row-${i} .upload-fields`);
     if (!enableBox || !uploadFields) continue;
     enableBox.addEventListener('change', function() {
       if (enableBox.checked) {
-        uploadFields.style.display = '';
+        uploadFields.classList.add('show');
       } else {
-        uploadFields.style.display = 'none';
+        uploadFields.classList.remove('show');
         // Clear file and comment if unchecked
         document.getElementById(`image${i}`).value = '';
         document.getElementsByName(`comment${i}`)[0].value = '';
@@ -48,12 +48,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Price calculation
   const priceSpan = document.getElementById('price');
   function updatePrice() {
-    let price = 219;
+    let price = 255;
     // Designs that are free
-    const freeDesigns = [3, 7, 11];
+    const freeDesigns = [3, 7];
     // Designs that are 20 SAR
     const twentySarDesigns = [6, 10];
-    for (let i = 1; i <= 10; i++) { // changed from 11 to 10
+    for (let i = 1; i <= 10; i++) {
       const enableBox = document.getElementById(`enable${i}`);
       if (enableBox && enableBox.checked && !freeDesigns.includes(i)) {
         if (twentySarDesigns.includes(i)) {
@@ -88,7 +88,31 @@ document.addEventListener('DOMContentLoaded', function() {
   updatePrice();
 
   // Color swatch selection logic
-  // Removed setupColorSwatches and setupColorCheckpoint for jacketColor and sleeveColor
+  function setupColorSwatches(swatchContainerId, inputId) {
+    const container = document.getElementById(swatchContainerId);
+    if (!container) return;
+    const input = document.getElementById(inputId);
+    const swatches = container.querySelectorAll('.color-swatch');
+    function selectSwatch(color) {
+      input.value = color;
+      swatches.forEach(btn => {
+        if (btn.getAttribute('data-color') === color) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+    }
+    swatches.forEach(btn => {
+      btn.addEventListener('click', function() {
+        selectSwatch(btn.getAttribute('data-color'));
+      });
+    });
+    // Set initial selection
+    selectSwatch(input.value);
+  }
+  setupColorSwatches('jacketColorSwatches', 'jacketColor');
+  setupColorSwatches('sleeveColorSwatches', 'sleeveColor');
 
   // Show checkpoint when color is selected
   function setupColorCheckpoint(radioName, checkpointId) {
@@ -106,7 +130,34 @@ document.addEventListener('DOMContentLoaded', function() {
   setupColorCheckpoint('sleeveColor', 'sleeveColorCheckpoint');
 
   // Sleeve rubber color preview logic (minimal, robust)
-  // Removed sleeveRubberSelect, sleeveRubberPreview, sleeveRubberImg, sleeveRubberLabel logic
+  const sleeveRubberSelect = document.getElementById('sleeveRubberColorSelect');
+  const sleeveRubberPreview = document.getElementById('sleeveRubberColorPreview');
+  const sleeveRubberImg = document.getElementById('sleeveRubberColorImg');
+  const sleeveRubberLabel = document.getElementById('sleeveRubberColorLabel');
+  console.log('sleeveRubberSelect:', sleeveRubberSelect);
+  if (sleeveRubberSelect) {
+    function updateSleeveRubberPreview() {
+      console.log('Event handler triggered');
+      const selectedOption = sleeveRubberSelect.options[sleeveRubberSelect.selectedIndex];
+      if (sleeveRubberSelect.value) {
+        const imagePath = selectedOption.getAttribute('data-image');
+        if (imagePath) {
+          sleeveRubberImg.src = imagePath;
+        }
+        sleeveRubberImg.style.display = 'block';
+        sleeveRubberLabel.textContent = selectedOption.text;
+        sleeveRubberPreview.style.display = 'flex';
+        console.log('Previewing image:', imagePath);
+      } else {
+        sleeveRubberPreview.style.display = 'none';
+        sleeveRubberImg.src = '';
+        sleeveRubberLabel.textContent = '';
+        console.log('No sleeve rubber color selected');
+      }
+    }
+    sleeveRubberSelect.addEventListener('change', updateSleeveRubberPreview);
+    // No preview on load, only after user selects
+  }
 
   // Form submission: send as FormData to n8n webhook
   document.getElementById('jacketForm').addEventListener('submit', function(e) {
@@ -116,6 +167,15 @@ document.addEventListener('DOMContentLoaded', function() {
       const el = document.getElementById(id);
       return el ? el.value : '';
     };
+    const getRadioValue = name => {
+      const radios = document.getElementsByName(name);
+      for (let radio of radios) {
+        if (radio.checked) {
+          return radio.value;
+        }
+      }
+      return '';
+    };
     formData.append('teamCode', getValue('teamCode'));
     formData.append('name', getValue('name'));
     formData.append('phoneCountry', getValue('phoneCountry'));
@@ -123,9 +183,11 @@ document.addEventListener('DOMContentLoaded', function() {
     formData.append('jacketName', getValue('jacketName'));
     formData.append('size', getValue('size'));
     formData.append('sleeveType', getValue('sleeveType'));
-    // Removed jacketColor, sleeveColor, sleeveRubberColor
+    formData.append('jacketColor', getRadioValue('jacketColor'));
+    formData.append('sleeveColor', getRadioValue('sleeveColor'));
+    formData.append('sleeveRubberColor', getValue('sleeveRubberColorSelect'));
     // Send selected designs
-    for (let i = 1; i <= 10; i++) { // changed from 11 to 10
+    for (let i = 1; i <= 10; i++) {
       if (document.getElementById(`enable${i}`) && document.getElementById(`enable${i}`).checked) {
         const fileInput = document.getElementById(`image${i}`);
         const commentInput = document.getElementsByName(`comment${i}`)[0];

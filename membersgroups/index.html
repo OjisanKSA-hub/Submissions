@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>متجر الجاكيت المخصص</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -71,60 +74,128 @@
             <option value="leather">جلد</option>
           </select>
         </div>
+        <div class="form-group">
+          <label style="display:block; text-align:right; color:#d72660; font-weight:bold;">لون الجاكيت</label>
+          <div class="color-swatches">
+            <label class="color-swatch white"><input type="radio" name="jacketColor" value="أبيض" required> أبيض</label>
+            <label class="color-swatch black"><input type="radio" name="jacketColor" value="أسود"> أسود</label>
+            <label class="color-swatch navy"><input type="radio" name="jacketColor" value="كحلي"> كحلي</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label style="display:block; text-align:right; color:#d72660; font-weight:bold;">لون الأكمام</label>
+          <div class="color-swatches">
+            <label class="color-swatch maroon"><input type="radio" name="sleeveColor" value="عنابي" required> عنابي</label>
+            <label class="color-swatch navy"><input type="radio" name="sleeveColor" value="كحلي"> كحلي</label>
+            <label class="color-swatch olive"><input type="radio" name="sleeveColor" value="زيتوني"> زيتوني</label>
+            <label class="color-swatch pink"><input type="radio" name="sleeveColor" value="وردي"> وردي</label>
+            <label class="color-swatch vblack"><input type="radio" name="sleeveColor" value="أسود فحمي"> أسود فحمي</label>
+            <label class="color-swatch grey"><input type="radio" name="sleeveColor" value="رمادي"> رمادي</label>
+            <label class="color-swatch lgrey"><input type="radio" name="sleeveColor" value="رمادي فاتح"> رمادي فاتح</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="sleeveRubberColorSelect">لون رباط الأكمام</label>
+          <select id="sleeveRubberColorSelect" name="sleeveRubberColor" required>
+            <option value="" disabled selected>اختر لون رباط الأكمام</option>
+            <option value="أسود مع خطين أزرق" data-image="Black-2-blue.png">أسود مع خطين أزرق</option>
+            <option value="أسود مع خطين رمادي" data-image="Black-2-grey.png">أسود مع خطين رمادي</option>
+            <option value="أسود مع خطين عنابي" data-image="Black-2-maroon.png">أسود مع خطين عنابي</option>
+            <option value="أسود مع خطين بنفسجي" data-image="Black-2-move.png">أسود مع خطين بنفسجي</option>
+            <option value="أسود مع خطين أحمر" data-image="Black-2-red.png">أسود مع خطين أحمر</option>
+            <option value="أسود مع خطين أبيض" data-image="Black-2-white.png">أسود مع خطين أبيض</option>
+            <option value="أسود مع خط أخضر" data-image="Black-green.png">أسود مع خط أخضر</option>
+            <option value="كحلي" data-image="Navy.png">كحلي</option>
+            <option value="كحلي مع خطين أبيض" data-image="Navy-2-white.png">كحلي مع خطين أبيض</option>
+            <option value="وردي مع خطين أبيض" data-image="Pink-2-white.png">وردي مع خطين أبيض</option>
+            <option value="أبيض مع خطين أزرق" data-image="White-2-blue.png">أبيض مع خطين أزرق</option>
+            <option value="أبيض مع خطين ذهبي" data-image="White-2-gold.png">أبيض مع خطين ذهبي</option>
+          </select>
+          <div id="sleeveRubberColorPreview" class="sleeve-rubber-preview" style="display:none;">
+            <img id="sleeveRubberColorImg" src="" alt="معاينة لون رباط الأكمام">
+            <div id="sleeveRubberColorLabel"></div>
+          </div>
+        </div>
       </div>
+      
+      <!-- Front Section -->
       <div class="jacket-design-upload-section">
-        <div class="jacket-front-preview" style="text-align:center; margin-bottom:18px;">
-          <img src="jacket-front.jpg" alt="جاكيت أمامي" style="max-width:180px; width:100%; border-radius:12px; box-shadow:0 2px 8px #e573a7aa;">
+        <div class="section-header">
+          <h2>تصميم الجاكيت - الجزء الأمامي</h2>
+          <div class="jacket-front-preview">
+            <img src="jacket-front.jpg" alt="جاكيت أمامي">
+          </div>
         </div>
         <div class="jacket-upload-columns">
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-1">
-              <label>1 (أمام) (10 ريال):</label>
-              <input type="checkbox" id="enable1" name="enable1">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>1 (أمام) (10 ريال):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable1" name="enable1">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image1" id="image1">
-                <input type="text" name="comment1" placeholder="تعليق للصورة 1" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment1" placeholder="تعليق للصورة 1">
               </div>
             </div>
           </div>
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-2">
-              <label>2 (أمام) (10 ريال):</label>
-              <input type="checkbox" id="enable2" name="enable2">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>2 (أمام) (10 ريال):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable2" name="enable2">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image2" id="image2">
-                <input type="text" name="comment2" placeholder="تعليق للصورة 2" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment2" placeholder="تعليق للصورة 2">
               </div>
             </div>
           </div>
         </div>
       </div>
+      
+      <!-- Right Sleeve Section -->
       <div class="jacket-design-upload-section">
-        <div class="jacket-front-preview" style="text-align:center; margin-bottom:18px;">
-          <img src="jacket-front.jpg" alt="جاكيت أمامي" style="max-width:180px; width:100%; border-radius:12px; box-shadow:0 2px 8px #e573a7aa;">
+        <div class="section-header">
+          <h2>تصميم الجاكيت - الكم الأيمن</h2>
+          <div class="jacket-front-preview">
+            <img src="jacket-front.jpg" alt="جاكيت أمامي">
+          </div>
         </div>
         <div class="jacket-upload-columns">
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-3">
-              <label>3 (كم أيمن) (مجاني):</label>
-              <input type="checkbox" id="enable3" name="enable3">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>3 (كم أيمن) (مجاني):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable3" name="enable3">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image3" id="image3">
-                <input type="text" name="comment3" placeholder="تعليق للصورة 3" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment3" placeholder="تعليق للصورة 3">
               </div>
             </div>
           </div>
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-4">
-              <label>4 (كم أيمن) (10 ريال):</label>
-              <input type="checkbox" id="enable4" name="enable4">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>4 (كم أيمن) (10 ريال):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable4" name="enable4">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image4" id="image4">
-                <input type="text" name="comment4" placeholder="تعليق للصورة 4" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment4" placeholder="تعليق للصورة 4">
               </div>
             </div>
           </div>
@@ -132,52 +203,73 @@
         <div class="jacket-upload-columns">
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-5">
-              <label>5 (كم أيمن) (10 ريال):</label>
-              <input type="checkbox" id="enable5" name="enable5">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>5 (كم أيمن) (10 ريال):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable5" name="enable5">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image5" id="image5">
-                <input type="text" name="comment5" placeholder="تعليق للصورة 5" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment5" placeholder="تعليق للصورة 5">
               </div>
             </div>
           </div>
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-6">
-              <label>6 (كم أيمن) (20 ريال):</label>
-              <input type="checkbox" id="enable6" name="enable6">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>6 (كم أيمن) (20 ريال):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable6" name="enable6">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image6" id="image6">
-                <input type="text" name="comment6" placeholder="تعليق للصورة 6" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment6" placeholder="تعليق للصورة 6">
               </div>
             </div>
           </div>
         </div>
       </div>
+      
+      <!-- Left Sleeve Section -->
       <div class="jacket-design-upload-section">
-        <div class="jacket-front-preview" style="text-align:center; margin-bottom:18px;">
-          <img src="jacket-front.jpg" alt="جاكيت أمامي" style="max-width:180px; width:100%; border-radius:12px; box-shadow:0 2px 8px #e573a7aa;">
+        <div class="section-header">
+          <h2>تصميم الجاكيت - الكم الأيسر</h2>
+          <div class="jacket-front-preview">
+            <img src="jacket-front.jpg" alt="جاكيت أمامي">
+          </div>
         </div>
         <div class="jacket-upload-columns">
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-7">
-              <label>7 (كم أيسر) (مجاني):</label>
-              <input type="checkbox" id="enable7" name="enable7">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>7 (كم أيسر) (مجاني):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable7" name="enable7">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image7" id="image7">
-                <input type="text" name="comment7" placeholder="تعليق للصورة 7" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment7" placeholder="تعليق للصورة 7">
               </div>
             </div>
           </div>
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-8">
-              <label>8 (كم أيسر) (10 ريال):</label>
-              <input type="checkbox" id="enable8" name="enable8">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>8 (كم أيسر) (10 ريال):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable8" name="enable8">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image8" id="image8">
-                <input type="text" name="comment8" placeholder="تعليق للصورة 8" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment8" placeholder="تعليق للصورة 8">
               </div>
             </div>
           </div>
@@ -185,37 +277,51 @@
         <div class="jacket-upload-columns">
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-9">
-              <label>9 (كم أيسر) (10 ريال):</label>
-              <input type="checkbox" id="enable9" name="enable9">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>9 (كم أيسر) (10 ريال):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable9" name="enable9">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image9" id="image9">
-                <input type="text" name="comment9" placeholder="تعليق للصورة 9" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment9" placeholder="تعليق للصورة 9">
               </div>
             </div>
           </div>
           <div class="jacket-upload-col">
             <div class="image-upload" id="upload-row-10">
-              <label>10 (كم أيسر) (20 ريال):</label>
-              <input type="checkbox" id="enable10" name="enable10">
-              <span>أرغب في رفع صورة</span>
-              <div class="upload-fields" style="display:none; flex-direction:column; align-items:center;">
+              <div class="upload-header">
+                <label>10 (كم أيسر) (20 ريال):</label>
+                <div class="checkbox-container">
+                  <input type="checkbox" id="enable10" name="enable10">
+                  <span>أرغب في رفع صورة</span>
+                </div>
+              </div>
+              <div class="upload-fields">
                 <input type="file" accept="image/*" name="image10" id="image10">
-                <input type="text" name="comment10" placeholder="تعليق للصورة 10" style="margin-top:8px; width:90%;">
+                <input type="text" name="comment10" placeholder="تعليق للصورة 10">
               </div>
             </div>
           </div>
         </div>
       </div>
+      
+      <!-- Back Section -->
       <div class="jacket-design-upload-section">
-        <div class="jacket-back-preview" style="text-align:center; margin-bottom:18px;">
-          <img src="jacket-back.jpg" alt="جاكيت خلفي" style="max-width:180px; width:100%; border-radius:12px; box-shadow:0 2px 8px #e573a7aa;">
+        <div class="section-header">
+          <h2>تصميم الجاكيت - الجزء الخلفي</h2>
+          <div class="jacket-back-preview">
+            <img src="jacket-back.jpg" alt="جاكيت خلفي">
+          </div>
         </div>
         <div class="form-group">
           <label for="jacketName">الاسم بالخلف</label>
           <input type="text" id="jacketName" name="jacketName" required>
         </div>
       </div>
+      
       <div class="additions-section-wrapper" style="display: flex; gap: 32px; margin-bottom: 24px; flex-wrap: wrap;">
         <div class="additions-section free-additions" style="flex: 1 1 300px; min-width: 220px; background: #e6f7ff; border-radius: 16px; padding: 18px 16px;">
           <div style="font-weight:bold; color:#2e7d32; margin-bottom:10px; font-size:1.1em;">الاضافات المجانية المشمولة بالسعر:</div>
