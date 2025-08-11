@@ -133,9 +133,45 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Form validation function
+  function validateForm() {
+    const errors = [];
+    
+    // Check if any checked checkbox has no file uploaded
+    for (let i = 1; i <= 11; i++) {
+      const enableBox = document.getElementById(`enable${i}`);
+      const fileInput = document.getElementById(`image${i}`);
+      
+      if (enableBox && enableBox.checked) {
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+          errors.push(`يجب رفع صورة للتصميم رقم ${i} أو إلغاء تحديده`);
+        }
+      }
+    }
+    
+    // Check paidAdd1 if checked
+    const paidAdd1Checkbox = document.getElementById('paidAdd1');
+    const paidAdd1Image = document.getElementById('paidAdd1Image');
+    if (paidAdd1Checkbox && paidAdd1Checkbox.checked) {
+      if (!paidAdd1Image || !paidAdd1Image.files || paidAdd1Image.files.length === 0) {
+        errors.push('يجب رفع صورة لتطريز البطانة أو إلغاء تحديده');
+      }
+    }
+    
+    return errors;
+  }
+
   // Form submission: send as FormData to n8n webhook
   document.getElementById('jacketForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    // Validate form before submission
+    const validationErrors = validateForm();
+    if (validationErrors.length > 0) {
+      alert('يرجى تصحيح الأخطاء التالية:\n\n' + validationErrors.join('\n'));
+      return;
+    }
+    
     const formData = new FormData();
     const getValue = id => {
       const el = document.getElementById(id);
