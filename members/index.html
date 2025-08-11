@@ -137,7 +137,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image1" id="image1">
-                <input type="text" name="comment1" placeholder="تعليق للصورة 1">
+                <input type="text" name="comment1" placeholder="تعليق للصورة 1" maxlength="100">
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image2" id="image2">
-                <input type="text" name="comment2" placeholder="تعليق للصورة 2">
+                <input type="text" name="comment2" placeholder="تعليق للصورة 2" maxlength="100">
               </div>
             </div>
           </div>
@@ -164,7 +164,7 @@
         <div class="section-header">
           <h2>تصميم الجاكيت - الكم الأيمن</h2>
           <div class="jacket-front-preview">
-            <img src="jacket-front.jpg" alt="جاكيت أمامي">
+            <img src="jacket-right.png" alt="جاكيت كم أيمن">
           </div>
         </div>
         <div class="jacket-upload-columns">
@@ -179,7 +179,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image3" id="image3">
-                <input type="text" name="comment3" placeholder="تعليق للصورة 3">
+                <input type="text" name="comment3" placeholder="تعليق للصورة 3" maxlength="100">
               </div>
             </div>
           </div>
@@ -194,7 +194,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image4" id="image4">
-                <input type="text" name="comment4" placeholder="تعليق للصورة 4">
+                <input type="text" name="comment4" placeholder="تعليق للصورة 4" maxlength="100">
               </div>
             </div>
           </div>
@@ -211,7 +211,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image5" id="image5">
-                <input type="text" name="comment5" placeholder="تعليق للصورة 5">
+                <input type="text" name="comment5" placeholder="تعليق للصورة 5" maxlength="100">
               </div>
             </div>
           </div>
@@ -226,7 +226,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image6" id="image6">
-                <input type="text" name="comment6" placeholder="تعليق للصورة 6">
+                <input type="text" name="comment6" placeholder="تعليق للصورة 6" maxlength="100">
               </div>
             </div>
           </div>
@@ -238,7 +238,7 @@
         <div class="section-header">
           <h2>تصميم الجاكيت - الكم الأيسر</h2>
           <div class="jacket-front-preview">
-            <img src="jacket-front.jpg" alt="جاكيت أمامي">
+            <img src="jacket-left.png" alt="جاكيت كم أيسر">
           </div>
         </div>
         <div class="jacket-upload-columns">
@@ -253,7 +253,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image7" id="image7">
-                <input type="text" name="comment7" placeholder="تعليق للصورة 7">
+                <input type="text" name="comment7" placeholder="تعليق للصورة 7" maxlength="100">
               </div>
             </div>
           </div>
@@ -268,7 +268,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image8" id="image8">
-                <input type="text" name="comment8" placeholder="تعليق للصورة 8">
+                <input type="text" name="comment8" placeholder="تعليق للصورة 8" maxlength="100">
               </div>
             </div>
           </div>
@@ -285,7 +285,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image9" id="image9">
-                <input type="text" name="comment9" placeholder="تعليق للصورة 9">
+                <input type="text" name="comment9" placeholder="تعليق للصورة 9" maxlength="100">
               </div>
             </div>
           </div>
@@ -300,7 +300,7 @@
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image10" id="image10">
-                <input type="text" name="comment10" placeholder="تعليق للصورة 10">
+                <input type="text" name="comment10" placeholder="تعليق للصورة 10" maxlength="100">
               </div>
             </div>
           </div>
@@ -333,12 +333,12 @@
                 <label>11 (خلف) (مجاني):</label>
                 <div class="checkbox-container">
                   <input type="checkbox" id="enable11" name="enable11">
-                  <span> أرغب في إضافة باتش</span>
+                  <span> أرغب في إضافة تصميم خلفي</span>
                 </div>
               </div>
               <div class="upload-fields">
                 <input type="file" accept="image/*" name="image11" id="image11">
-                <input type="text" name="comment11" placeholder="تعليق للصورة 11">
+                <input type="text" name="comment11" placeholder="تعليق للصورة 11" maxlength="100">
               </div>
             </div>
           </div>
@@ -346,22 +346,22 @@
       </div>
       
       <div class="additions-section-wrapper" style="display: flex; gap: 32px; margin-bottom: 24px; flex-wrap: wrap;">
-        <div class="additions-section free-additions" style="flex: 1 1 300px; min-width: 220px; background: #e6f7ff; border-radius: 16px; padding: 18px 16px;">
-          <div style="font-weight:bold; color:#2e7d32; margin-bottom:10px; font-size:1.1em;">الاضافات المجانية المشمولة بالسعر:</div>
-          <div class="addition-item" style="display:flex; flex-direction:column; margin-bottom:12px;">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-              <input type="checkbox" id="freeAdd1" name="freeAdd1">
-              <label for="freeAdd1" style="margin:0;">جيب مخفي</label>
-            </div>
-          </div>
-          <div class="addition-item" style="display:flex; flex-direction:column; margin-bottom:12px;">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-              <input type="checkbox" id="freeAdd2" name="freeAdd2">
-              <label for="freeAdd2" style="margin:0;">بطانة داخلية سادة</label>
-            </div>
-            <input type="text" id="freeAdd2Comment" name="freeAdd2Comment" placeholder="تعليق (اختياري)" style="display:none; width:100%; padding:8px; border:1px solid #ccc; border-radius:8px; margin-top:4px;">
-          </div>
-        </div>
+                 <div class="additions-section free-additions" style="flex: 1 1 300px; min-width: 220px; background: #e6f7ff; border-radius: 16px; padding: 18px 16px;">
+           <div style="font-weight:bold; color:#2e7d32; margin-bottom:10px; font-size:1.1em;">الاضافات المجانية المشمولة بالسعر:</div>
+           <div class="addition-item" style="display:flex; flex-direction:column; margin-bottom:12px;">
+             <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+               <input type="checkbox" id="freeAdd1" name="freeAdd1" checked disabled>
+               <label for="freeAdd1" style="margin:0;">جيب مخفي</label>
+             </div>
+           </div>
+           <div class="addition-item" style="display:flex; flex-direction:column; margin-bottom:12px;">
+             <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+               <input type="checkbox" id="freeAdd2" name="freeAdd2" checked disabled>
+               <label for="freeAdd2" style="margin:0;">بطانة داخلية سادة</label>
+             </div>
+             <input type="text" id="freeAdd2Comment" name="freeAdd2Comment" placeholder="تعليق (اختياري)" maxlength="100" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:8px; margin-top:4px;">
+           </div>
+         </div>
                  <div class="additions-section paid-additions" style="flex: 1 1 300px; min-width: 220px; background: #fff0f6; border-radius: 16px; padding: 18px 16px;">
            <div style="font-weight:bold; color:#d72660; margin-bottom:10px; font-size:1.1em;">الإضافات المدفوعة:</div>
            <div class="addition-item" style="display:flex; flex-direction:column; margin-bottom:12px;">
@@ -382,7 +382,7 @@
                 <label for="paidAdd1" style="margin:0;">تطريز بطانة <span style="color:#d72660;">35 ريال</span></label>
               </div>
               <input type="file" accept="image/*" id="paidAdd1Image" name="paidAdd1Image" style="display:none; width:95%; padding:8px; border:1px solid #ccc; border-radius:8px; margin-bottom:4px;">
-              <input type="text" id="paidAdd1Comment" name="paidAdd1Comment" placeholder="تعليق (اختياري)" style="display:none; width:100%; padding:8px; border:1px solid #ccc; border-radius:8px; margin-top:4px;">
+              <input type="text" id="paidAdd1Comment" name="paidAdd1Comment" placeholder="تعليق (اختياري)" maxlength="100" style="display:none; width:100%; padding:8px; border:1px solid #ccc; border-radius:8px; margin-top:4px;">
             </div>
          </div>
       </div>
