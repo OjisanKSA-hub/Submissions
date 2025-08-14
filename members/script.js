@@ -195,27 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  async function deleteUser(teamCode, phone, name) {
-    try {
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/submissions?"TeamCode"=eq.${teamCode}&"Phone"=eq.${phone}&"Name"=eq.${name}`, {
-        method: 'DELETE',
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      return true;
-    } catch (error) {
-      console.error('Error deleting user:', error);
-      return false;
-    }
-  }
+
 
   // Form submission: send as FormData to n8n webhook
   document.getElementById('jacketForm').addEventListener('submit', async function(e) {
@@ -297,22 +277,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check if user already exists in Supabase
     const teamCode = getValue('teamCode');
+    const phoneCountry = getValue('phoneCountry');
     const phone = getValue('phone');
+    const fullPhone = phoneCountry + phone; // Combine country code with phone number
     const name = getValue('name');
     
     try {
-      const existingUser = await checkUserExists(teamCode, phone, name);
+      const existingUser = await checkUserExists(teamCode, fullPhone, name);
       
       if (existingUser) {
         // User exists, check status
         if (existingUser["Status"] === 'rejected') {
-          // Delete the rejected user before proceeding
-          const deleteSuccess = await deleteUser(teamCode, phone, name);
-          if (!deleteSuccess) {
-            alert('حدث خطأ أثناء حذف الطلب المرفوض السابق. يرجى المحاولة مرة أخرى.');
-            return;
-          }
-          // Continue with form submission
+          // User exists with rejected status, continue with form submission
         } else {
           // User exists and status is not rejected, show alert
           alert('عفوا لقد تم تقديم هذا الطلب بالفعل والطلب قيد المراجعة!');
@@ -320,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
       
-      // User doesn't exist or was deleted (if rejected), proceed with form submission
+      // User doesn't exist or has rejected status, proceed with form submission
       const res = await fetch('https://n8n.srv886746.hstgr.cloud/webhook/3634ec6c-6ed9-4c34-99f7-62b26495266d', {
         method: 'POST',
         body: formData
