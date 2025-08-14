@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Supabase API functions
   async function checkUserExists(teamCode, phone, name) {
     try {
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/team_member_submission?select="Status"&"TeamCode"=eq.${teamCode}&"Phone"=eq.${phone}&"Name"=eq.${encodeURIComponent(name)}`, {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/team_member_submission?select="Status"&"TeamCode"=eq.${encodeURIComponent(teamCode)}&"Phone"=eq.'${encodeURIComponent(phone)}'&"Name"=eq.'${encodeURIComponent(name)}'`, {
         method: 'GET',
         headers: {
           'apikey': SUPABASE_ANON_KEY,
