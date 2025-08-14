@@ -1,3 +1,7 @@
+// Supabase configuration
+const SUPABASE_URL = 'https://pxapeabojeqcwrcfaunx.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YXBlYWJvamVxY3dyY2ZhdW54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MDU1MjcsImV4cCI6MjA2NTQ4MTUyN30.lVYtO25bgg7U1Lxhx33bxXeODcSr2AgT_80WFWQ8ooU';
+
 // Populate team code from URL query string (e.g., ?team=1234)
 document.addEventListener('DOMContentLoaded', function() {
   console.log('JS loaded');
@@ -161,8 +165,60 @@ document.addEventListener('DOMContentLoaded', function() {
     return errors;
   }
 
+  // Supabase API functions
+  async function checkUserExists(teamCode, phone, name) {
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/submissions?select="Status"&"TeamCode"=eq.${teamCode}&"Phone"=eq.${phone}&"Name"=eq.${name}`, {
+        method: 'GET',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.status === 406) {
+        // User doesn't exist, return null
+        return null;
+      }
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data.length > 0 ? data[0] : null;
+    } catch (error) {
+      console.error('Error checking user existence:', error);
+      // If there's an error, assume user doesn't exist and continue
+      return null;
+    }
+  }
+
+  async function deleteUser(teamCode, phone, name) {
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/submissions?"TeamCode"=eq.${teamCode}&"Phone"=eq.${phone}&"Name"=eq.${name}`, {
+        method: 'DELETE',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      return false;
+    }
+  }
+
   // Form submission: send as FormData to n8n webhook
-  document.getElementById('jacketForm').addEventListener('submit', function(e) {
+  document.getElementById('jacketForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     // Validate form before submission
@@ -238,16 +294,46 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // Send final price
     formData.append('finalPrice', document.getElementById('price').textContent);
-    fetch('https://n8n.srv886746.hstgr.cloud/webhook/3634ec6c-6ed9-4c34-99f7-62b26495266d', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => {
+    
+    // Check if user already exists in Supabase
+    const teamCode = getValue('teamCode');
+    const phone = getValue('phone');
+    const name = getValue('name');
+    
+    try {
+      const existingUser = await checkUserExists(teamCode, phone, name);
+      
+      if (existingUser) {
+        // User exists, check status
+        if (existingUser["Status"] === 'rejected') {
+          // Delete the rejected user before proceeding
+          const deleteSuccess = await deleteUser(teamCode, phone, name);
+          if (!deleteSuccess) {
+            alert('حدث خطأ أثناء حذف الطلب المرفوض السابق. يرجى المحاولة مرة أخرى.');
+            return;
+          }
+          // Continue with form submission
+        } else {
+          // User exists and status is not rejected, show alert
+          alert('عفوا لقد تم تقديم هذا الطلب بالفعل والطلب قيد المراجعة!');
+          return;
+        }
+      }
+      
+      // User doesn't exist or was deleted (if rejected), proceed with form submission
+      const res = await fetch('https://n8n.srv886746.hstgr.cloud/webhook/3634ec6c-6ed9-4c34-99f7-62b26495266d', {
+        method: 'POST',
+        body: formData
+      });
+      
       if (res.ok) {
         window.location.href = 'success.html';
       } else {
         alert('حدث خطأ أثناء الإرسال.');
       }
-    });
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      alert('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.');
+    }
   });
 }); 
