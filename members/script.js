@@ -1,6 +1,6 @@
 // Supabase configuration
 const SUPABASE_URL = 'https://pxapeabojeqcwrcfaunx.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YXBlYWJvamVxY3dyY2ZhdW54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MDU1MjcsImV4cCI6MjA2NTQ4MTUyN30.lVYtO25bgg7U1Lxhx33bxXeODcSr2AgT_80WFWQ8ooU';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YXBlYWJvamVxY3dyY2ZhdW54Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTkwNTUyNywiZXhwIjoyMDY1NDgxNTI3fQ.y4LrbiXtJw9pDTBgU0EJZLc0nw6yRx_sVQb0fcRNBe0';
 
 // Populate team code from URL query string (e.g., ?team=1234)
 document.addEventListener('DOMContentLoaded', function() {
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Supabase API functions
   async function checkUserExists(teamCode, phone, name) {
     try {
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/team_member_submission?select="Status"&"TeamCode"=eq.${encodeURIComponent(teamCode)}&"Phone"=eq.'${encodeURIComponent(phone)}'&"Name"=eq.'${encodeURIComponent(name)}'`, {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/team_member_submission?select="Status"&"TeamCode"=eq.${encodeURIComponent(teamCode)}&"Phone"=like.${encodeURIComponent(phone)}&"Name"=eq.${encodeURIComponent(name)}&"Status"=in.(pending,accepted)`, {
         method: 'GET',
         headers: {
           'apikey': SUPABASE_ANON_KEY,
@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const name = getValue('name');
     
     try {
-      const existingUser = await checkUserExists(teamCode, fullPhone, name);
+             const existingUser = await checkUserExists(teamCode, fullPhone, name);
       
       if (existingUser) {
         // User exists, check status
