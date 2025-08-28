@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   }
-  setupAdditionComment('freeAdd2', 'freeAdd2Comment');
   setupAdditionComment('paidAdd1', 'paidAdd1Comment');
   // Show/hide paidAdd1 image field as well
   const paidAdd1Checkbox = document.getElementById('paidAdd1');
@@ -250,10 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (checkbox && checkbox.checked) {
         const label = document.querySelector(`label[for='freeAdd${i}']`);
         formData.append(`freeAdd${i}`, label ? label.textContent.trim() : '');
-        if (i === 2) {
-          const commentInput = document.getElementById('freeAdd2Comment');
-          formData.append('freeAdd2Comment', commentInput ? commentInput.value : '');
-        }
+
       }
     }
     // Send paid additions

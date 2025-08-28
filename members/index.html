@@ -47,7 +47,7 @@
         </div>
         <div class="form-group">
           <label for="phone">رقم الهاتف</label>
-          <input type="tel" id="phone" name="phone" required pattern="^[0-9]{6,}$" placeholder="مثال: 50123456">
+          <input type="tel" id="phone" name="phone" required pattern="^[1-9][0-9]{5,}$" placeholder="مثال: 50123456">
         </div>
         <div class="form-group">
           <label for="size">المقاس</label>
@@ -86,17 +86,17 @@
           <div class="color-swatches">
             <label class="color-swatch maroon"><input type="radio" name="sleeveColor" value="عنابي" required> عنابي</label>
             <label class="color-swatch navy"><input type="radio" name="sleeveColor" value="كحلي"> كحلي</label>
-            <label class="color-swatch olive"><input type="radio" name="sleeveColor" value="زيتوني"> زيتوني</label>
+            <label class="color-swatch olive"><input type="radio" name="sleeveColor" value="زيتي غامق"> زيتي غامق</label>
             <label class="color-swatch pink"><input type="radio" name="sleeveColor" value="وردي"> وردي</label>
-            <label class="color-swatch vblack"><input type="radio" name="sleeveColor" value="أسود فحمي"> أسود فحمي</label>
+            <label class="color-swatch vblack"><input type="radio" name="sleeveColor" value="أسود"> أسود </label>
             <label class="color-swatch grey"><input type="radio" name="sleeveColor" value="رمادي"> رمادي</label>
             <label class="color-swatch lgrey"><input type="radio" name="sleeveColor" value="رمادي فاتح"> رمادي فاتح</label>
           </div>
         </div>
         <div class="form-group">
-          <label for="sleeveRubberColorSelect">لون رباط الأكمام</label>
+          <label for="sleeveRubberColorSelect">لون المطاط</label>
           <select id="sleeveRubberColorSelect" name="sleeveRubberColor" required>
-            <option value="" disabled selected>اختر لون رباط الأكمام</option>
+            <option value="" disabled selected>اختر لون المطاط</option>
             <option value="أسود مع خطين أزرق" data-image="Black-2-blue.png">أسود مع خطين أزرق</option>
             <option value="أسود مع خطين رمادي" data-image="Black-2-grey.png">أسود مع خطين رمادي</option>
             <option value="أسود مع خطين عنابي" data-image="Black-2-maroon.png">أسود مع خطين عنابي</option>
@@ -111,7 +111,7 @@
             <option value="أبيض مع خطين ذهبي" data-image="White-2-gold.png">أبيض مع خطين ذهبي</option>
           </select>
           <div id="sleeveRubberColorPreview" class="sleeve-rubber-preview" style="display:none;">
-            <img id="sleeveRubberColorImg" src="" alt="معاينة لون رباط الأكمام">
+            <img id="sleeveRubberColorImg" src="" alt="معاينة لون المطاط">
             <div id="sleeveRubberColorLabel"></div>
           </div>
         </div>
@@ -359,7 +359,6 @@
                 <input type="checkbox" id="freeAdd2" name="freeAdd2" checked disabled>
                 <label for="freeAdd2" style="margin:0;">بطانة داخلية سادة</label>
               </div>
-              <input type="text" id="freeAdd2Comment" name="freeAdd2Comment" placeholder="تعليق (اختياري)" maxlength="100" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:8px; margin-top:4px;">
             </div>
             <div class="addition-item" style="display:flex; flex-direction:column; margin-bottom:12px;">
               <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">

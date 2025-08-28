@@ -30,21 +30,84 @@ orderTypeRadios.forEach(radio => {
     // Existing promoFields logic
     if (this.value === 'عرض ترويجي') {
       promoFields.style.display = 'block';
-      document.querySelectorAll('input[name="لون الجاكيت"]').forEach(i => i.required = true);
-      document.querySelectorAll('input[name="لون الأكمام"]').forEach(i => i.required = true);
-      document.querySelectorAll('select[name="لون مطاط الأكمام"]').forEach(i => i.required = true);
-      document.getElementById('backDesign').required = true;
-      if (backExampleBox) backExampleBox.style.display = 'flex';
+      backExampleBox.style.display = 'block';
     } else {
       promoFields.style.display = 'none';
-      document.querySelectorAll('input[name="لون الجاكيت"]').forEach(i => i.required = false);
-      document.querySelectorAll('input[name="لون الأكمام"]').forEach(i => i.required = false);
-      document.querySelectorAll('select[name="لون مطاط الأكمام"]').forEach(i => i.required = false);
-      document.getElementById('backDesign').required = false;
-      if (backExampleBox) backExampleBox.style.display = 'none';
+      backExampleBox.style.display = 'none';
     }
   });
 });
+
+// Form validation function
+function validateForm() {
+  const errors = [];
+  
+  // Check required fields
+  const requiredFields = [
+    { id: 'name', label: 'الاسم' },
+    { id: 'phoneNumber', label: 'رقم الجوال' },
+    { id: 'countryCode', label: 'رمز الدولة' }
+  ];
+  
+  requiredFields.forEach(field => {
+    const element = document.getElementById(field.id);
+    if (!element || !element.value.trim()) {
+      errors.push(`يجب ملء حقل "${field.label}"`);
+    }
+  });
+  
+  // Check if order type is selected
+  const orderTypeSelected = document.querySelector('input[name="نوع الطلب"]:checked');
+  if (!orderTypeSelected) {
+    errors.push('يجب اختيار نوع الطلب');
+  }
+  
+  // Check team members if required
+  if (teamMembersInput.required) {
+    if (!teamMembersInput.value.trim()) {
+      errors.push('يجب إدخال عدد أعضاء المجموعة');
+    } else {
+      const val = parseInt(teamMembersInput.value, 10);
+      const min = parseInt(teamMembersInput.min, 10);
+      const max = parseInt(teamMembersInput.max, 10);
+      if (isNaN(val) || val < min || val > max) {
+        errors.push(`يجب إدخال عدد أعضاء المجموعة بين ${min} و ${max}`);
+      }
+    }
+  }
+  
+  // Check promo fields if visible
+  if (promoFields.style.display === 'block') {
+    const jacketColorChecked = document.querySelector('input[name="لون الجاكيت"]:checked');
+    const sleeveColorChecked = document.querySelector('input[name="لون الأكمام"]:checked');
+    const sleeveRubberColorSelected = document.getElementById('sleeveRubberColorSelect').value;
+    const backDesignFile = document.getElementById('backDesign').files[0];
+    
+    if (!jacketColorChecked) {
+      errors.push('يجب اختيار لون الجاكيت');
+    }
+    if (!sleeveColorChecked) {
+      errors.push('يجب اختيار لون الأكمام');
+    }
+    if (!sleeveRubberColorSelected) {
+      errors.push('يجب اختيار لون مطاط الأكمام');
+    }
+    if (!backDesignFile) {
+      errors.push('يجب رفع صورة لتصميم الظهر');
+    }
+  }
+  
+  // Check phone number format
+  const phoneInput = document.getElementById('phoneNumber');
+  if (phoneInput && phoneInput.value.trim()) {
+    const phonePattern = /^[1-9][0-9]{5,}$/;
+    if (!phonePattern.test(phoneInput.value.trim())) {
+      errors.push('يجب إدخال رقم جوال صحيح (6 أرقام على الأقل) بدون رمز الدولة - لا يجب أن يبدأ الرقم بصفر');
+    }
+  }
+  
+  return errors;
+}
 
 // التحقق من رقم الجوال لأي رمز دولة
 const countryCodeInput = document.getElementById('countryCode');
@@ -57,9 +120,9 @@ function getFullPhoneNumber() {
 
 phoneNumberInput.addEventListener('input', function() {
   const val = phoneNumberInput.value.trim();
-  const regex = /^[0-9]{6,}$/;
+  const regex = /^[1-9][0-9]{5,}$/;
   if (!regex.test(val)) {
-    phoneError.textContent = 'يرجى إدخال رقم جوال صحيح (6 أرقام على الأقل) بدون رمز الدولة';
+    phoneError.textContent = 'يرجى إدخال رقم جوال صحيح (6 أرقام على الأقل) بدون رمز الدولة - لا يجب أن يبدأ الرقم بصفر';
     phoneNumberInput.classList.add('invalid');
   } else {
     phoneError.textContent = '';
@@ -108,17 +171,12 @@ const form = document.getElementById('jacketOrderForm');
 const successPage = document.getElementById('successPage');
 form.addEventListener('submit', function(e) {
   e.preventDefault();
-  if (phoneNumberInput.classList.contains('invalid')) return;
-  if (teamMembersInput.required && teamMembersInput.classList.contains('invalid')) return;
-  const promoVisible = promoFields.style.display === 'block';
-  if (promoVisible) {
-    const jacketColorChecked = document.querySelector('input[name="لون الجاكيت"]:checked');
-    const sleeveColorChecked = document.querySelector('input[name="لون الأكمام"]:checked');
-    // For the dropdown, check if a value is selected
-    if (!jacketColorChecked || !sleeveColorChecked || !sleeveRubberColorSelect.value) {
-      alert('يرجى اختيار لون الجاكيت ولون الأكمام ولون مطاط الأكمام');
-      return;
-    }
+  
+  // Validate form before submission
+  const validationErrors = validateForm();
+  if (validationErrors.length > 0) {
+    alert('يرجى تصحيح الأخطاء التالية:\n\n' + validationErrors.join('\n'));
+    return;
   }
   const formData = new FormData(form);
 

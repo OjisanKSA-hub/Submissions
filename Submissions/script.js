@@ -53,9 +53,60 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   updatePrice();
 
+  // Form validation function
+  function validateForm() {
+    const errors = [];
+    
+    // Check required fields
+    const requiredFields = [
+      { id: 'name', label: 'الاسم' },
+      { id: 'phone', label: 'رقم الهاتف' },
+      { id: 'jacketName', label: 'الاسم بالخلف' },
+      { id: 'size', label: 'المقاس' }
+    ];
+    
+    requiredFields.forEach(field => {
+      const element = document.getElementById(field.id);
+      if (!element || !element.value.trim()) {
+        errors.push(`يجب ملء حقل "${field.label}"`);
+      }
+    });
+    
+    // Check phone number format
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput && phoneInput.value.trim()) {
+      const phonePattern = /^\+[1-9][0-9]{5,}$/;
+      if (!phonePattern.test(phoneInput.value.trim())) {
+        errors.push('يجب إدخال رقم الهاتف بالصيغة الصحيحة (مثال: +48123456789) - لا يجب أن يبدأ الرقم بصفر');
+      }
+    }
+    
+    // Check if any checked checkbox has no file uploaded
+    for (let i = 1; i <= 9; i++) {
+      const enableBox = document.getElementById(`enable${i}`);
+      const fileInput = document.getElementById(`image${i}`);
+      
+      if (enableBox && enableBox.checked) {
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+          errors.push(`يجب رفع صورة للتصميم رقم ${i} أو إلغاء تحديده`);
+        }
+      }
+    }
+    
+    return errors;
+  }
+
   // Form submission: send as FormData to n8n webhook
   document.getElementById('jacketForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    // Validate form before submission
+    const validationErrors = validateForm();
+    if (validationErrors.length > 0) {
+      alert('يرجى تصحيح الأخطاء التالية:\n\n' + validationErrors.join('\n'));
+      return;
+    }
+    
     const formData = new FormData();
     formData.append('teamCode', document.getElementById('teamCode').value);
     formData.append('name', document.getElementById('name').value);
