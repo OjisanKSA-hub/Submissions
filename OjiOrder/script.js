@@ -6,36 +6,73 @@ const teamMembersInput = document.getElementById('teamMembers');
 const teamMembersError = document.getElementById('teamMembersError');
 const backExampleBox = document.getElementById('backExampleBox');
 
+// Function to handle order type changes
+function handleOrderTypeChange(selectedValue) {
+  // Show team members field for options 2, 3, 4
+  if (selectedValue === 'فريق1-4' || selectedValue === 'فريق5-29' || selectedValue === 'عرض ترويجي') {
+    teamMembersGroup.style.display = 'block';
+    teamMembersInput.required = true;
+    if (selectedValue === 'فريق1-4') {
+      teamMembersInput.min = 1;
+      teamMembersInput.max = 4;
+      teamMembersInput.placeholder = '1 - 4';
+    } else {
+      teamMembersInput.min = 5;
+      teamMembersInput.max = 29;
+      teamMembersInput.placeholder = '5 - 29';
+    }
+  } else {
+    teamMembersGroup.style.display = 'none';
+    teamMembersInput.required = false;
+    teamMembersInput.value = '';
+    teamMembersError.textContent = '';
+  }
+  
+  // Handle promo fields visibility and required attributes
+  if (selectedValue === 'عرض ترويجي') {
+    promoFields.style.display = 'block';
+    backExampleBox.style.display = 'block';
+    
+    // Make promo fields required
+    document.getElementById('backDesign').required = true;
+    document.querySelector('input[name="لون الجاكيت"]').required = true;
+    document.querySelector('input[name="لون الأكمام"]').required = true;
+    document.getElementById('sleeveRubberColorSelect').required = true;
+  } else {
+    promoFields.style.display = 'none';
+    backExampleBox.style.display = 'none';
+    
+    // Remove required attribute from promo fields and clear their values
+    document.getElementById('backDesign').required = false;
+    document.querySelector('input[name="لون الجاكيت"]').required = false;
+    document.querySelector('input[name="لون الأكمام"]').required = false;
+    document.getElementById('sleeveRubberColorSelect').required = false;
+    
+    // Clear promo field values
+    document.getElementById('backDesign').value = '';
+    document.querySelectorAll('input[name="لون الجاكيت"]').forEach(radio => radio.checked = false);
+    document.querySelectorAll('input[name="لون الأكمام"]').forEach(radio => radio.checked = false);
+    document.getElementById('sleeveRubberColorSelect').value = '';
+    document.getElementById('sleeveRubberColorPreview').style.display = 'none';
+  }
+}
+
 orderTypeRadios.forEach(radio => {
   radio.addEventListener('change', function() {
-    // Show team members field for options 2, 3, 4
-    if (this.value === 'فريق1-4' || this.value === 'فريق5-29' || this.value === 'عرض ترويجي') {
-      teamMembersGroup.style.display = 'block';
-      teamMembersInput.required = true;
-      if (this.value === 'فريق1-4') {
-        teamMembersInput.min = 1;
-        teamMembersInput.max = 4;
-        teamMembersInput.placeholder = '1 - 4';
-      } else {
-        teamMembersInput.min = 5;
-        teamMembersInput.max = 29;
-        teamMembersInput.placeholder = '5 - 29';
-      }
-    } else {
-      teamMembersGroup.style.display = 'none';
-      teamMembersInput.required = false;
-      teamMembersInput.value = '';
-      teamMembersError.textContent = '';
-    }
-    // Existing promoFields logic
-    if (this.value === 'عرض ترويجي') {
-      promoFields.style.display = 'block';
-      backExampleBox.style.display = 'block';
-    } else {
-      promoFields.style.display = 'none';
-      backExampleBox.style.display = 'none';
-    }
+    handleOrderTypeChange(this.value);
   });
+});
+
+// Initialize form state on page load
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if any order type is already selected (in case of form state restoration)
+  const selectedOrderType = document.querySelector('input[name="نوع الطلب"]:checked');
+  if (selectedOrderType) {
+    handleOrderTypeChange(selectedOrderType.value);
+  } else {
+    // Ensure promo fields are hidden and not required by default
+    handleOrderTypeChange('');
+  }
 });
 
 // Form validation function
