@@ -44,6 +44,7 @@
           <label><input type="radio" name="نوع الطلب" value="فريق1-4"> طلب مجموعة، من 1 إلى 4 جاكيتات، السعر يبدأ من 255 ريال لكل جاكيت</label>
           <label><input type="radio" name="نوع الطلب" value="فريق5-29"> طلب مجموعة، من 5 إلى 29 جاكيتاً بألوان وتصاميم مختلفة، السعر يبدأ من 255 ريال لكل جاكيت</label>
           <label><input type="radio" name="نوع الطلب" value="عرض ترويجي" id="promoOption"> طلب مجموعة، من 5 إلى 29 جاكيتاً بلون واحد ولون أكمام واحد ولون مطاط الأكمام الواحد وتصميم خلفي واحد (عرض ترويجي)، السعر يبدأ من 219 ريال لكل جاكيت</label>
+          <label><input type="radio" name="نوع الطلب" value="طلب الجاكيت الوطني" id="nationalOption"> طلب الجاكيت الوطني - تصميم مخصص للجاكيت السعودي، السعر 95 ريال + شحن 29 ريال</label>
         </div>
         <div class="form-group" id="teamMembersGroup" style="display:none">
           <label for="teamMembers">عدد أعضاء المجموعة</label>
@@ -105,6 +106,64 @@
           </div>
         </div>
       </div>
+      <div id="nationalFields" style="display:none">
+        <div class="national-jacket-sections">
+          <div class="jacket-section">
+            <div class="jacket-section-header">
+              <img src="jacket-right.png" alt="الكم الأيمن" class="jacket-section-img">
+              <h4>الكم الأيمن</h4>
+            </div>
+            <div class="form-group">
+              <label for="rightSleeveDesign">اختر التصميم</label>
+              <select id="rightSleeveDesign" name="تصميم الكم الأيمن">
+                <option value="" disabled selected>اختر التصميم</option>
+                <option value="اطلق دفعة + 966+">اطلق دفعة + 966+</option>
+                <option value="سيفين ونخلة + 966+">سيفين ونخلة + 966+</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="jacket-section">
+            <div class="jacket-section-header">
+              <img src="jacket-left.png" alt="الكم الأيسر" class="jacket-section-img">
+              <h4>الكم الأيسر</h4>
+            </div>
+            <div class="form-group">
+              <label for="leftSleeveDesign">اختر التصميم</label>
+              <select id="leftSleeveDesign" name="تصميم الكم الأيسر">
+                <option value="" disabled selected>اختر التصميم</option>
+                <option value="08 + عبارة">08 + عبارة</option>
+                <option value="09 + عبارة">09 + عبارة</option>
+                <option value="07 + عبارة">07 + عبارة</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="jacket-section">
+            <div class="jacket-section-header">
+              <img src="jacket-front.jpg" alt="الامام" class="jacket-section-img">
+              <h4>الامام رقم 1</h4>
+            </div>
+            <div class="form-group">
+              <label for="frontLetters">إدخال حرفين باللغة الإنجليزية (مثل TH/CB)</label>
+              <input type="text" id="frontLetters" name="حروف الامام" maxlength="2" pattern="[A-Za-z]{2}" placeholder="مثال: TH أو CB">
+              <small class="help-text">يرجى إدخال حرفين فقط باللغة الإنجليزية</small>
+            </div>
+          </div>
+          
+          <div class="jacket-section">
+            <div class="jacket-section-header">
+              <img src="jacket-back.jpg" alt="الظهر" class="jacket-section-img">
+              <h4>الظهر</h4>
+            </div>
+            <div class="form-group">
+              <label for="backName">إدخال الاسم باللغة الإنجليزية</label>
+              <input type="text" id="backName" name="اسم الظهر" placeholder="أدخل اسمك باللغة الإنجليزية">
+              <small class="help-text">يرجى إدخال الاسم باللغة الإنجليزية فقط</small>
+            </div>
+          </div>
+        </div>
+      </div>
       <fieldset>
         <legend>تفاصيل الشحن</legend>
         <div class="form-group">
@@ -140,6 +199,7 @@
         <h3>أسعار الشحن</h3>
         <ul>
           <li>داخل السعودية: مجاناً</li>
+          <li><strong>الجاكيت الوطني:</strong> 29 ريال</li>
           <li>دول الخليج:
             <ul>
               <li>من 1 إلى 10 جاكيتات: 75 ريال لكل جاكيت</li>
@@ -167,5 +227,6 @@
     </div>
   </div>
   <script src="script.js"></script>
+  <script src="national-jacket.js"></script>
 </body>
 </html> 

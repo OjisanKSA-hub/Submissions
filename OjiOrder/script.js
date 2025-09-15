@@ -1,10 +1,14 @@
 // إظهار/إخفاء الحقول الشرطية
 const orderTypeRadios = document.querySelectorAll('input[name="نوع الطلب"]');
 const promoFields = document.getElementById('promoFields');
+const nationalFields = document.getElementById('nationalFields');
 const teamMembersGroup = document.getElementById('teamMembersGroup');
 const teamMembersInput = document.getElementById('teamMembers');
 const teamMembersError = document.getElementById('teamMembersError');
 const backExampleBox = document.getElementById('backExampleBox');
+
+// Make nationalFields available globally for national-jacket.js
+window.nationalFields = nationalFields;
 
 // Function to handle order type changes
 function handleOrderTypeChange(selectedValue) {
@@ -55,6 +59,13 @@ function handleOrderTypeChange(selectedValue) {
     document.getElementById('sleeveRubberColorSelect').value = '';
     document.getElementById('sleeveRubberColorPreview').style.display = 'none';
   }
+  
+  // Handle national jacket fields
+  if (selectedValue === 'طلب الجاكيت الوطني') {
+    nationalFields.style.display = 'block';
+  } else {
+    nationalFields.style.display = 'none';
+  }
 }
 
 orderTypeRadios.forEach(radio => {
@@ -73,6 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ensure promo fields are hidden and not required by default
     handleOrderTypeChange('');
   }
+  
+  // Wait a bit for national jacket script to load
+  setTimeout(function() {
+    console.log('Checking national jacket functions availability...');
+    console.log('nationalJacketValidation available:', typeof window.nationalJacketValidation === 'function');
+    console.log('submitNationalJacketOrder available:', typeof window.submitNationalJacketOrder === 'function');
+  }, 100);
 });
 
 // Form validation function
@@ -208,6 +226,32 @@ const form = document.getElementById('jacketOrderForm');
 const successPage = document.getElementById('successPage');
 form.addEventListener('submit', function(e) {
   e.preventDefault();
+  
+  // Check if national jacket is selected - handle it here
+  const orderTypeSelected = document.querySelector('input[name="نوع الطلب"]:checked');
+  if (orderTypeSelected && orderTypeSelected.value === 'طلب الجاكيت الوطني') {
+    console.log('National jacket selected, validating...');
+    
+    // Check if national jacket functions are available
+    if (typeof window.nationalJacketValidation !== 'function' || typeof window.submitNationalJacketOrder !== 'function') {
+      console.error('National jacket functions not loaded yet');
+      alert('يرجى الانتظار لحظة ثم المحاولة مرة أخرى.');
+      return;
+    }
+    
+    // Validate national jacket fields
+    const nationalErrors = window.nationalJacketValidation();
+    console.log('National jacket validation errors:', nationalErrors);
+    if (nationalErrors.length > 0) {
+      alert('يرجى تصحيح الأخطاء التالية:\n\n' + nationalErrors.join('\n'));
+      return;
+    }
+    
+    // Submit national jacket order
+    console.log('Submitting national jacket order...');
+    window.submitNationalJacketOrder();
+    return;
+  }
   
   // Validate form before submission
   const validationErrors = validateForm();
