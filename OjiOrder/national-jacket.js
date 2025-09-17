@@ -4,6 +4,7 @@
 // DOM Elements
 const nationalOption = document.getElementById('nationalOption');
 // nationalFields is already declared in script.js
+const jacketColorCombo = document.getElementById('jacketColorCombo');
 const rightSleeveDesign = document.getElementById('rightSleeveDesign');
 const leftSleeveDesign = document.getElementById('leftSleeveDesign');
 const frontLetters = document.getElementById('frontLetters');
@@ -12,6 +13,11 @@ const backName = document.getElementById('backName');
 // National jacket specific validation function
 function validateNationalJacketFields() {
   const errors = [];
+  
+  // Check jacket color combo
+  if (!jacketColorCombo.value) {
+    errors.push('يجب اختيار لون الجاكيت والأكمام');
+  }
   
   // Check right sleeve design
   if (!rightSleeveDesign.value) {
@@ -39,7 +45,7 @@ function validateNationalJacketFields() {
   } else {
     const englishPattern = /^[A-Za-z\s]+$/;
     if (!englishPattern.test(backName.value.trim())) {
-      errors.push('يجب إدخال الاسم باللغة الإنجليزية فقط للظهر');
+      errors.push('يجب إدخال الاسم باللغة الإنجليزية فقط للظهر (أحرف إنجليزية ومسافات فقط)');
     }
   }
   
@@ -67,14 +73,48 @@ if (frontLetters) {
 
 // Real-time validation for back name input
 if (backName) {
+  // Prevent non-English characters from being typed
   backName.addEventListener('input', function() {
-    const val = this.value.trim();
-    const englishPattern = /^[A-Za-z\s]*$/;
+    const val = this.value;
+    // Remove any non-English characters immediately
+    const englishOnly = val.replace(/[^A-Za-z\s]/g, '');
     
-    if (val && !englishPattern.test(val)) {
+    // If the value changed, update it
+    if (val !== englishOnly) {
+      this.value = englishOnly;
+    }
+    
+    // Visual validation
+    const englishPattern = /^[A-Za-z\s]*$/;
+    if (englishOnly && !englishPattern.test(englishOnly)) {
       this.classList.add('invalid');
     } else {
       this.classList.remove('invalid');
+    }
+  });
+  
+  // Also prevent paste of non-English text
+  backName.addEventListener('paste', function(e) {
+    e.preventDefault();
+    const paste = (e.clipboardData || window.clipboardData).getData('text');
+    const englishOnly = paste.replace(/[^A-Za-z\s]/g, '');
+    this.value = englishOnly;
+  });
+  
+  // Prevent typing non-English characters
+  backName.addEventListener('keypress', function(e) {
+    const char = String.fromCharCode(e.which);
+    const englishPattern = /^[A-Za-z\s]$/;
+    
+    // Allow backspace, delete, tab, enter, arrow keys, etc.
+    if (e.which === 8 || e.which === 9 || e.which === 13 || e.which === 46 || 
+        (e.which >= 37 && e.which <= 40)) {
+      return;
+    }
+    
+    // Block non-English characters
+    if (!englishPattern.test(char)) {
+      e.preventDefault();
     }
   });
 }
@@ -92,6 +132,7 @@ function handleNationalJacketSelection() {
         }
         
         // Make national fields required
+        jacketColorCombo.required = true;
         rightSleeveDesign.required = true;
         leftSleeveDesign.required = true;
         frontLetters.required = true;
@@ -112,6 +153,7 @@ function handleNationalJacketSelection() {
         }
         
         // Remove required attributes from national fields
+        jacketColorCombo.required = false;
         rightSleeveDesign.required = false;
         leftSleeveDesign.required = false;
         frontLetters.required = false;
@@ -126,6 +168,7 @@ function handleNationalJacketSelection() {
 
 // Clear national field values
 function clearNationalFieldValues() {
+  jacketColorCombo.value = '';
   rightSleeveDesign.value = '';
   leftSleeveDesign.value = '';
   frontLetters.value = '';
@@ -181,6 +224,7 @@ function submitNationalJacketOrder() {
     'الحي': document.getElementById('neighborhood').value,
     'الشارع': document.getElementById('street').value,
     'تفاصيل إضافية': document.getElementById('details').value,
+    'لون الجاكيت والأكمام': jacketColorCombo.value,
     'تصميم الكم الأيمن': rightSleeveDesign.value,
     'تصميم الكم الأيسر': leftSleeveDesign.value,
     'حروف الامام': frontLetters.value,
@@ -236,6 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.nationalFields) {
       window.nationalFields.style.display = 'block';
     }
+    jacketColorCombo.required = true;
     rightSleeveDesign.required = true;
     leftSleeveDesign.required = true;
     frontLetters.required = true;
