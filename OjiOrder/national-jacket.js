@@ -5,6 +5,7 @@
 const nationalOption = document.getElementById('nationalOption');
 // nationalFields is already declared in script.js
 const jacketColorCombo = document.getElementById('jacketColorCombo');
+const nationalJacketSize = document.getElementById('nationalJacketSize');
 const rightSleeveDesign = document.getElementById('rightSleeveDesign');
 const leftSleeveDesign = document.getElementById('leftSleeveDesign');
 const frontLetters = document.getElementById('frontLetters');
@@ -17,6 +18,11 @@ function validateNationalJacketFields() {
   // Check jacket color combo
   if (!jacketColorCombo.value) {
     errors.push('يجب اختيار لون الجاكيت والأكمام');
+  }
+  
+  // Check jacket size
+  if (!nationalJacketSize.value) {
+    errors.push('يجب اختيار مقاس الجاكيت الوطني');
   }
   
   // Check right sleeve design
@@ -133,6 +139,7 @@ function handleNationalJacketSelection() {
         
         // Make national fields required
         jacketColorCombo.required = true;
+        nationalJacketSize.required = true;
         rightSleeveDesign.required = true;
         leftSleeveDesign.required = true;
         frontLetters.required = true;
@@ -154,6 +161,7 @@ function handleNationalJacketSelection() {
         
         // Remove required attributes from national fields
         jacketColorCombo.required = false;
+        nationalJacketSize.required = false;
         rightSleeveDesign.required = false;
         leftSleeveDesign.required = false;
         frontLetters.required = false;
@@ -169,6 +177,7 @@ function handleNationalJacketSelection() {
 // Clear national field values
 function clearNationalFieldValues() {
   jacketColorCombo.value = '';
+  nationalJacketSize.value = '';
   rightSleeveDesign.value = '';
   leftSleeveDesign.value = '';
   frontLetters.value = '';
@@ -225,6 +234,7 @@ function submitNationalJacketOrder() {
     'الشارع': document.getElementById('street').value,
     'تفاصيل إضافية': document.getElementById('details').value,
     'لون الجاكيت والأكمام': jacketColorCombo.value,
+    'مقاس الجاكيت الوطني': nationalJacketSize.value,
     'تصميم الكم الأيمن': rightSleeveDesign.value,
     'تصميم الكم الأيسر': leftSleeveDesign.value,
     'حروف الامام': frontLetters.value,
@@ -281,6 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
       window.nationalFields.style.display = 'block';
     }
     jacketColorCombo.required = true;
+    nationalJacketSize.required = true;
     rightSleeveDesign.required = true;
     leftSleeveDesign.required = true;
     frontLetters.required = true;
