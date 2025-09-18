@@ -155,9 +155,9 @@ function validateForm() {
   // Check phone number format
   const phoneInput = document.getElementById('phoneNumber');
   if (phoneInput && phoneInput.value.trim()) {
-    const phonePattern = /^[1-9][0-9]{5,}$/;
+    const phonePattern = /^[1-9][0-9]{8}$/;
     if (!phonePattern.test(phoneInput.value.trim())) {
-      errors.push('يجب إدخال رقم جوال صحيح (6 أرقام على الأقل) بدون رمز الدولة - لا يجب أن يبدأ الرقم بصفر');
+      errors.push('رقم الجوال غير صحيح - يجب أن يكون 9 أرقام بالضبط');
     }
   }
   
@@ -175,9 +175,9 @@ function getFullPhoneNumber() {
 
 phoneNumberInput.addEventListener('input', function() {
   const val = phoneNumberInput.value.trim();
-  const regex = /^[1-9][0-9]{5,}$/;
-  if (!regex.test(val)) {
-    phoneError.textContent = 'يرجى إدخال رقم جوال صحيح (6 أرقام على الأقل) بدون رمز الدولة - لا يجب أن يبدأ الرقم بصفر';
+  const regex = /^[1-9][0-9]{8}$/;
+  if (val && !regex.test(val)) {
+    phoneError.textContent = 'رقم الجوال غير صحيح - يجب أن يكون 9 أرقام بالضبط';
     phoneNumberInput.classList.add('invalid');
   } else {
     phoneError.textContent = '';
