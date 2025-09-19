@@ -198,12 +198,25 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('jacketForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    // Get submit button and prevent multiple submissions
+    const submitButton = document.querySelector('button[type="submit"]');
+    if (submitButton.disabled) {
+      return; // Already submitting
+    }
+    
     // Validate form before submission
     const validationErrors = validateForm();
     if (validationErrors.length > 0) {
       alert('يرجى تصحيح الأخطاء التالية:\n\n' + validationErrors.join('\n'));
       return;
     }
+    
+    // Disable button and show loading state
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'جاري الإرسال...';
+    submitButton.style.opacity = '0.6';
+    submitButton.style.cursor = 'not-allowed';
     
     const formData = new FormData();
     const getValue = id => {
@@ -300,10 +313,20 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'success.html';
       } else {
         alert('حدث خطأ أثناء الإرسال.');
+        // Re-enable button on error
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+        submitButton.style.opacity = '1';
+        submitButton.style.cursor = 'pointer';
       }
     } catch (error) {
       console.error('Error during form submission:', error);
       alert('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.');
+      // Re-enable button on error
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+      submitButton.style.opacity = '1';
+      submitButton.style.cursor = 'pointer';
     }
   });
 }); 

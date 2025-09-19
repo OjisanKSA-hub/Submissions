@@ -216,7 +216,7 @@ function enhanceFormValidation() {
 }
 
 // Submit national jacket order to specific webhook
-function submitNationalJacketOrder() {
+function submitNationalJacketOrder(originalText, submitButton) {
   console.log('submitNationalJacketOrder function called');
   const form = document.getElementById('jacketOrderForm');
   const formData = new FormData(form);
@@ -266,11 +266,25 @@ function submitNationalJacketOrder() {
     } else {
       console.error('Submission failed with status:', res.status);
       alert('حدث خطأ أثناء الإرسال. حاول مرة أخرى.');
+      // Re-enable button on error
+      if (submitButton && originalText) {
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+        submitButton.style.opacity = '1';
+        submitButton.style.cursor = 'pointer';
+      }
     }
   })
   .catch(error => {
     console.error('Submission error:', error);
     alert('حدث خطأ أثناء الإرسال. حاول مرة أخرى.');
+    // Re-enable button on error
+    if (submitButton && originalText) {
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+      submitButton.style.opacity = '1';
+      submitButton.style.cursor = 'pointer';
+    }
   });
 }
 

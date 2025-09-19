@@ -266,6 +266,12 @@ const successPage = document.getElementById('successPage');
 form.addEventListener('submit', function(e) {
   e.preventDefault();
   
+  // Get submit button and prevent multiple submissions
+  const submitButton = document.getElementById('submitBtn');
+  if (submitButton.disabled) {
+    return; // Already submitting
+  }
+  
   // Check if national jacket is selected - handle it here
   const orderTypeSelected = document.querySelector('input[name="نوع الطلب"]:checked');
   if (orderTypeSelected && orderTypeSelected.value === 'طلب الجاكيت الوطني') {
@@ -286,9 +292,16 @@ form.addEventListener('submit', function(e) {
       return;
     }
     
+    // Disable button and show loading state for national jacket
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'جاري الإرسال...';
+    submitButton.style.opacity = '0.6';
+    submitButton.style.cursor = 'not-allowed';
+    
     // Submit national jacket order
     console.log('Submitting national jacket order...');
-    window.submitNationalJacketOrder();
+    window.submitNationalJacketOrder(originalText, submitButton);
     return;
   }
   
@@ -298,6 +311,13 @@ form.addEventListener('submit', function(e) {
     alert('يرجى تصحيح الأخطاء التالية:\n\n' + validationErrors.join('\n'));
     return;
   }
+  
+  // Disable button and show loading state
+  const originalText = submitButton.textContent;
+  submitButton.disabled = true;
+  submitButton.textContent = 'جاري الإرسال...';
+  submitButton.style.opacity = '0.6';
+  submitButton.style.cursor = 'not-allowed';
   const formData = new FormData(form);
 
   // Build order JSON
@@ -323,9 +343,19 @@ form.addEventListener('submit', function(e) {
       successPage.style.display = 'block';
     } else {
       alert('حدث خطأ أثناء الإرسال. حاول مرة أخرى.');
+      // Re-enable button on error
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+      submitButton.style.opacity = '1';
+      submitButton.style.cursor = 'pointer';
     }
   })
   .catch(() => {
     alert('حدث خطأ أثناء الإرسال. حاول مرة أخرى.');
+    // Re-enable button on error
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+    submitButton.style.opacity = '1';
+    submitButton.style.cursor = 'pointer';
   });
 }); 
