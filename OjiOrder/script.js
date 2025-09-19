@@ -100,6 +100,7 @@ function validateForm() {
   // Check required fields
   const requiredFields = [
     { id: 'name', label: 'الاسم' },
+    { id: 'lastName', label: 'اسم العائلة' },
     { id: 'phoneNumber', label: 'رقم الجوال' },
     { id: 'countryCode', label: 'رمز الدولة' }
   ];
@@ -110,6 +111,18 @@ function validateForm() {
       errors.push(`يجب ملء حقل "${field.label}"`);
     }
   });
+  
+  // Check name and lastname character limits
+  const nameInput = document.getElementById('name');
+  const lastNameInput = document.getElementById('lastName');
+  
+  if (nameInput && nameInput.value.trim().length > 12) {
+    errors.push('الاسم يجب أن يكون 12 حرف أو أقل');
+  }
+  
+  if (lastNameInput && lastNameInput.value.trim().length > 12) {
+    errors.push('اسم العائلة يجب أن يكون 12 حرف أو أقل');
+  }
   
   // Check if order type is selected
   const orderTypeSelected = document.querySelector('input[name="نوع الطلب"]:checked');
@@ -184,6 +197,32 @@ phoneNumberInput.addEventListener('input', function() {
     phoneNumberInput.classList.remove('invalid');
   }
 });
+
+// Real-time validation for name fields
+const nameInput = document.getElementById('name');
+const lastNameInput = document.getElementById('lastName');
+
+if (nameInput) {
+  nameInput.addEventListener('input', function() {
+    const val = this.value.trim();
+    if (val.length > 12) {
+      this.classList.add('invalid');
+    } else {
+      this.classList.remove('invalid');
+    }
+  });
+}
+
+if (lastNameInput) {
+  lastNameInput.addEventListener('input', function() {
+    const val = this.value.trim();
+    if (val.length > 12) {
+      this.classList.add('invalid');
+    } else {
+      this.classList.remove('invalid');
+    }
+  });
+}
 
 // التحقق من عدد أعضاء المجموعة
 teamMembersInput.addEventListener('input', function() {

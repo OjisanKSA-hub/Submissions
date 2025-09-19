@@ -19,7 +19,11 @@
     <form id="jacketOrderForm" autocomplete="off">
       <div class="form-group">
         <label for="name">الاسم</label>
-        <input type="text" id="name" name="الاسم" required>
+        <input type="text" id="name" name="الاسم" required maxlength="12">
+      </div>
+      <div class="form-group">
+        <label for="lastName">اسم العائلة</label>
+        <input type="text" id="lastName" name="اسم العائلة" required maxlength="12">
       </div>
       <div class="form-group phone-group">
         <label for="phoneNumber">رقم الجوال</label>

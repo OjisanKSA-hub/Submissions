@@ -225,6 +225,7 @@ function submitNationalJacketOrder() {
   const orderObj = {
     'نوع الطلب': 'طلب الجاكيت الوطني',
     'الاسم': document.getElementById('name').value,
+    'اسم العائلة': document.getElementById('lastName').value,
     'رمز الدولة': document.getElementById('countryCode').value,
     'رقم الجوال': document.getElementById('phoneNumber').value,
     'رقم الجوال الكامل': document.getElementById('countryCode').value + document.getElementById('phoneNumber').value,
