@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Price calculation
   const priceSpan = document.getElementById('price');
   function updatePrice() {
-    let price = 255;
+    let price = 219;
     // Designs that are free
     const freeDesigns = [3, 7];
     // Designs that are 20 SAR
