@@ -85,6 +85,41 @@ document.addEventListener('DOMContentLoaded', function() {
     handleOrderTypeChange('');
   }
   
+  // Setup custom color fields for promo section
+  function setupPromoCustomColorField(radioId, fieldId, inputId) {
+    const radio = document.getElementById(radioId);
+    const field = document.getElementById(fieldId);
+    const input = document.getElementById(inputId);
+    
+    if (radio && field && input) {
+      // Show/hide custom color field when "لون آخر" is selected
+      radio.addEventListener('change', function() {
+        if (this.checked) {
+          field.style.display = 'block';
+          input.required = true;
+          input.focus();
+        }
+      });
+      
+      // Hide field when other colors are selected
+      const allRadios = document.getElementsByName(radio.name);
+      allRadios.forEach(r => {
+        if (r !== radio) {
+          r.addEventListener('change', function() {
+            if (this.checked) {
+              field.style.display = 'none';
+              input.required = false;
+              input.value = '';
+            }
+          });
+        }
+      });
+    }
+  }
+  
+  setupPromoCustomColorField('promoJacketColorOther', 'promoJacketCustomColorField', 'promoJacketCustomColor');
+  setupPromoCustomColorField('promoSleeveColorOther', 'promoSleeveCustomColorField', 'promoSleeveCustomColor');
+  
   // Wait a bit for national jacket script to load
   setTimeout(function() {
     console.log('Checking national jacket functions availability...');
@@ -153,10 +188,22 @@ function validateForm() {
     
     if (!jacketColorChecked) {
       errors.push('يجب اختيار لون الجاكيت');
+    } else if (jacketColorChecked.value === 'لون آخر') {
+      const customInput = document.getElementById('promoJacketCustomColor');
+      if (!customInput || !customInput.value.trim()) {
+        errors.push('يجب إدخال اسم لون الجاكيت المخصص');
+      }
     }
+    
     if (!sleeveColorChecked) {
       errors.push('يجب اختيار لون الأكمام');
+    } else if (sleeveColorChecked.value === 'لون آخر') {
+      const customInput = document.getElementById('promoSleeveCustomColor');
+      if (!customInput || !customInput.value.trim()) {
+        errors.push('يجب إدخال اسم لون الأكمام المخصص');
+      }
     }
+    
     if (!sleeveRubberColorSelected) {
       errors.push('يجب اختيار لون مطاط الأكمام');
     }
@@ -325,8 +372,22 @@ form.addEventListener('submit', function(e) {
   form.querySelectorAll('input, select, textarea').forEach(el => {
     if ((el.type === 'radio' && el.checked) || (el.type !== 'radio' && el.type !== 'checkbox')) {
       if (el.name === 'رقم الجوال') return; // skip, we'll add full phone below
-      // For sleeve rubber color, use the value directly (now it's Arabic text)
-      orderObj[el.name] = el.value;
+      
+      // Handle custom colors - replace "لون آخر" with actual custom color
+      if (el.type === 'radio' && el.checked && el.value === 'لون آخر') {
+        if (el.name === 'لون الجاكيت') {
+          const customInput = document.getElementById('promoJacketCustomColor');
+          orderObj[el.name] = customInput ? customInput.value.trim() : el.value;
+        } else if (el.name === 'لون الأكمام') {
+          const customInput = document.getElementById('promoSleeveCustomColor');
+          orderObj[el.name] = customInput ? customInput.value.trim() : el.value;
+        } else {
+          orderObj[el.name] = el.value;
+        }
+      } else {
+        // For sleeve rubber color, use the value directly (now it's Arabic text)
+        orderObj[el.name] = el.value;
+      }
     }
   });
   orderObj['رقم الجوال'] = getFullPhoneNumber();

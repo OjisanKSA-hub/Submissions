@@ -112,6 +112,41 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   setupColorSelection('jacketColor');
   setupColorSelection('sleeveColor');
+  
+  // Custom color functionality
+  function setupCustomColorField(radioId, fieldId, inputId) {
+    const radio = document.getElementById(radioId);
+    const field = document.getElementById(fieldId);
+    const input = document.getElementById(inputId);
+    
+    if (radio && field && input) {
+      // Show/hide custom color field when "لون آخر" is selected
+      radio.addEventListener('change', function() {
+        if (this.checked) {
+          field.style.display = 'block';
+          input.required = true;
+          input.focus();
+        }
+      });
+      
+      // Hide field when other colors are selected
+      const allRadios = document.getElementsByName(radio.name);
+      allRadios.forEach(r => {
+        if (r !== radio) {
+          r.addEventListener('change', function() {
+            if (this.checked) {
+              field.style.display = 'none';
+              input.required = false;
+              input.value = '';
+            }
+          });
+        }
+      });
+    }
+  }
+  
+  setupCustomColorField('jacketColorOther', 'jacketCustomColorField', 'jacketCustomColor');
+  setupCustomColorField('sleeveColorOther', 'sleeveCustomColorField', 'sleeveCustomColor');
 
   // Sleeve rubber color preview logic (simple, like OjiOrder)
   const sleeveRubberSelect = document.getElementById('sleeveRubberColorSelect');
@@ -158,6 +193,23 @@ document.addEventListener('DOMContentLoaded', function() {
     if (paidAdd1Checkbox && paidAdd1Checkbox.checked) {
       if (!paidAdd1Image || !paidAdd1Image.files || paidAdd1Image.files.length === 0) {
         errors.push('يجب رفع صورة لتطريز البطانة أو إلغاء تحديده');
+      }
+    }
+    
+    // Check custom color fields if "لون آخر" is selected
+    const jacketColorOther = document.getElementById('jacketColorOther');
+    const jacketCustomColor = document.getElementById('jacketCustomColor');
+    if (jacketColorOther && jacketColorOther.checked) {
+      if (!jacketCustomColor || !jacketCustomColor.value.trim()) {
+        errors.push('يجب إدخال اسم لون الجاكيت المخصص');
+      }
+    }
+    
+    const sleeveColorOther = document.getElementById('sleeveColorOther');
+    const sleeveCustomColor = document.getElementById('sleeveCustomColor');
+    if (sleeveColorOther && sleeveColorOther.checked) {
+      if (!sleeveCustomColor || !sleeveCustomColor.value.trim()) {
+        errors.push('يجب إدخال اسم لون الأكمام المخصص');
       }
     }
     
@@ -229,6 +281,16 @@ document.addEventListener('DOMContentLoaded', function() {
       const radios = document.getElementsByName(name);
       for (let radio of radios) {
         if (radio.checked) {
+          // If "لون آخر" is selected, return the custom color value instead
+          if (radio.value === 'لون آخر') {
+            if (name === 'jacketColor') {
+              const customInput = document.getElementById('jacketCustomColor');
+              return customInput ? customInput.value.trim() : radio.value;
+            } else if (name === 'sleeveColor') {
+              const customInput = document.getElementById('sleeveCustomColor');
+              return customInput ? customInput.value.trim() : radio.value;
+            }
+          }
           return radio.value;
         }
       }

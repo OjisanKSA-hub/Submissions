@@ -498,6 +498,23 @@ button[type="submit"]:disabled {
   pointer-events: none;
 }
 
+.color-swatch.other {
+  background: linear-gradient(45deg, #ddd 25%, transparent 25%), 
+              linear-gradient(-45deg, #ddd 25%, transparent 25%), 
+              linear-gradient(45deg, transparent 75%, #ddd 75%), 
+              linear-gradient(-45deg, transparent 75%, #ddd 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  color: #333;
+  border: 2px solid #999;
+}
+
+.custom-color-field input {
+  font-family: 'Cairo', 'Segoe UI', Arial, sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
 #price {
   font-weight: bold;
   color: #d72660;
