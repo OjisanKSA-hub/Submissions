@@ -175,8 +175,27 @@ document.addEventListener('DOMContentLoaded', function() {
   function validateForm() {
     const errors = [];
     
-    // Check if any checked checkbox has no file uploaded
+    // Required fields that must be filled (3, 7, 11)
+    const requiredFields = [3, 7, 11];
+    
+    // Check required fields first
+    for (let i of requiredFields) {
+      const enableBox = document.getElementById(`enable${i}`);
+      const fileInput = document.getElementById(`image${i}`);
+      
+      if (!enableBox || !enableBox.checked) {
+        const fieldNames = {3: 'كم أيمن', 7: 'كم أيسر', 11: 'خلف'};
+        errors.push(`يجب تحديد وإضافة تصميم للحقل رقم ${i} (${fieldNames[i]}) - هذا الحقل مطلوب`);
+      } else if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        const fieldNames = {3: 'كم أيمن', 7: 'كم أيسر', 11: 'خلف'};
+        errors.push(`يجب رفع صورة للتصميم رقم ${i} (${fieldNames[i]}) - هذا الحقل مطلوب`);
+      }
+    }
+    
+    // Check if any other checked checkbox has no file uploaded
     for (let i = 1; i <= 11; i++) {
+      if (requiredFields.includes(i)) continue; // Skip required fields, already checked above
+      
       const enableBox = document.getElementById(`enable${i}`);
       const fileInput = document.getElementById(`image${i}`);
       
