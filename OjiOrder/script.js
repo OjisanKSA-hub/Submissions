@@ -1,3 +1,159 @@
+// Phone Verification Modal Logic
+const phoneVerificationModal = document.getElementById('phoneVerificationModal');
+const modalCountryCode = document.getElementById('modalCountryCode');
+const modalPhoneNumber = document.getElementById('modalPhoneNumber');
+const modalPhoneError = document.getElementById('modalPhoneError');
+const checkPhoneBtn = document.getElementById('checkPhoneBtn');
+const verificationMessage = document.getElementById('verificationMessage');
+const jacketOrderForm = document.getElementById('jacketOrderForm');
+const formCountryCode = document.getElementById('countryCode');
+const formPhoneNumber = document.getElementById('phoneNumber');
+
+// Show modal on page load
+document.addEventListener('DOMContentLoaded', function() {
+  phoneVerificationModal.style.display = 'block';
+  // Disable form interaction
+  jacketOrderForm.style.pointerEvents = 'none';
+  jacketOrderForm.style.opacity = '0.5';
+  
+  // Focus on phone number input
+  setTimeout(() => {
+    modalPhoneNumber.focus();
+  }, 100);
+});
+
+// Phone validation function
+function validatePhone(phone) {
+  const phonePattern = /^[1-9][0-9]{8}$/;
+  return phonePattern.test(phone);
+}
+
+// Check phone button click handler
+checkPhoneBtn.addEventListener('click', async function() {
+  const countryCode = modalCountryCode.value;
+  const phoneNumber = modalPhoneNumber.value.trim();
+  
+  // Clear previous errors
+  modalPhoneError.textContent = '';
+  verificationMessage.style.display = 'none';
+  
+  // Validate phone number
+  if (!phoneNumber) {
+    modalPhoneError.textContent = 'يرجى إدخال رقم الجوال';
+    return;
+  }
+  
+  if (!validatePhone(phoneNumber)) {
+    modalPhoneError.textContent = 'رقم الجوال غير صحيح. يجب أن يبدأ برقم من 1-9 ويحتوي على 9 أرقام';
+    return;
+  }
+  
+  // Disable button and show loading
+  checkPhoneBtn.disabled = true;
+  checkPhoneBtn.textContent = 'جاري التحقق...';
+  
+  try {
+    const fullPhone = countryCode + phoneNumber;
+    const response = await fetch('https://n8n.srv886746.hstgr.cloud/webhook/e99a9c1c-ebf0-462a-ac0c-970f64752cf0', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        phone: fullPhone
+      })
+    });
+    
+    if (response.ok) {
+      const responseText = await response.text();
+      if (responseText.trim() === '') {
+        // Empty response - allow user to proceed
+        handleEmptyResponse(fullPhone);
+      } else {
+        const data = JSON.parse(responseText);
+        handleVerificationResponse(data, fullPhone);
+      }
+    } else {
+      throw new Error('Network response was not ok');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    verificationMessage.style.display = 'block';
+    verificationMessage.className = 'verification-message error';
+    verificationMessage.textContent = 'حدث خطأ أثناء التحقق. يرجى المحاولة مرة أخرى.';
+  } finally {
+    // Re-enable button
+    checkPhoneBtn.disabled = false;
+    checkPhoneBtn.textContent = 'التحقق';
+  }
+});
+
+// Handle Enter key press in modal
+modalPhoneNumber.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    checkPhoneBtn.click();
+  }
+});
+
+// Handle empty response (new user, no previous orders)
+function handleEmptyResponse(fullPhone) {
+  verificationMessage.style.display = 'block';
+  verificationMessage.className = 'verification-message success';
+  verificationMessage.textContent = 'مرحباً! يمكنك الآن إكمال طلبك الجديد.';
+  
+  // Set phone in form and disable it
+  formCountryCode.value = modalCountryCode.value;
+  formPhoneNumber.value = modalPhoneNumber.value;
+  formPhoneNumber.disabled = true;
+  formCountryCode.disabled = true;
+  
+  // Hide modal and enable form
+  setTimeout(() => {
+    phoneVerificationModal.style.display = 'none';
+    jacketOrderForm.style.pointerEvents = 'auto';
+    jacketOrderForm.style.opacity = '1';
+  }, 2000);
+}
+
+// Handle verification response
+function handleVerificationResponse(data, fullPhone) {
+  verificationMessage.style.display = 'block';
+  
+  switch (data.Status) {
+    case 'accepted':
+      verificationMessage.className = 'verification-message success';
+      verificationMessage.textContent = 'تم التحقق بنجاح! يمكنك الآن إكمال الطلب.';
+      
+      // Set phone in form and disable it
+      formCountryCode.value = modalCountryCode.value;
+      formPhoneNumber.value = modalPhoneNumber.value;
+      formPhoneNumber.disabled = true;
+      formCountryCode.disabled = true;
+      
+      // Hide modal and enable form
+      setTimeout(() => {
+        phoneVerificationModal.style.display = 'none';
+        jacketOrderForm.style.pointerEvents = 'auto';
+        jacketOrderForm.style.opacity = '1';
+      }, 2000);
+      break;
+      
+    case 'pending':
+      verificationMessage.className = 'verification-message warning';
+      verificationMessage.textContent = 'عذراً، لا يمكنك إضافة طلب آخر لأن طلبك تحت المراجعة. يرجى الانتظار أو التواصل مع خدمة العملاء.';
+      break;
+      
+    case 'rejected':
+      verificationMessage.className = 'verification-message error';
+      verificationMessage.textContent = 'عذراً، لا يمكنك إضافة طلب آخر لأن طلبك تم رفضه. يرجى الانتظار أو التواصل مع خدمة العملاء.';
+      break;
+      
+    default:
+      verificationMessage.className = 'verification-message error';
+      verificationMessage.textContent = 'حالة غير معروفة. يرجى التواصل مع خدمة العملاء.';
+  }
+}
+
 // إظهار/إخفاء الحقول الشرطية
 const orderTypeRadios = document.querySelectorAll('input[name="نوع الطلب"]');
 const promoFields = document.getElementById('promoFields');
