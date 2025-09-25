@@ -10,6 +10,55 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Phone Verification Modal -->
+  <div id="phoneVerificationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>التحقق من رقم الهاتف</h2>
+        <p>يرجى إدخال رقم هاتفك للتحقق من حالة طلبك</p>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="modalCountryCode">رمز الدولة</label>
+          <select id="modalCountryCode" required>
+            <option value="+966">السعودية 🇸🇦 (+966)</option>
+            <option value="+971">الإمارات 🇦🇪 (+971)</option>
+            <option value="+965">الكويت 🇰🇼 (+965)</option>
+            <option value="+974">قطر 🇶🇦 (+974)</option>
+            <option value="+973">البحرين 🇧🇭 (+973)</option>
+            <option value="+968">عمان 🇴🇲 (+968)</option>
+            <option value="+48">بولندا 🇵🇱 (+48)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="modalPhoneNumber">رقم الجوال</label>
+          <input type="text" id="modalPhoneNumber" placeholder="أدخل رقم الجوال بدون رمز الدولة" required pattern="^[1-9][0-9]{8}$">
+          <small class="error" id="modalPhoneError"></small>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="checkPhoneBtn" class="check-btn">التحقق</button>
+        </div>
+        <div id="verificationMessage" class="verification-message" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invalid Team Code Modal -->
+  <div id="invalidTeamModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>⚠️ نموذج غير صحيح</h2>
+        <p>عذراً، كود المجموعة غير صحيح أو غير موجود</p>
+      </div>
+      <div class="modal-body">
+        <div class="verification-message error">
+          <strong>عذراً، النموذج غير صحيح</strong><br>
+          يرجى التأكد من الرابط أو التواصل مع المسؤول
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <h1>فورم طلب جاكيت السينيور</h1>
     <div class="jacket-images-row">

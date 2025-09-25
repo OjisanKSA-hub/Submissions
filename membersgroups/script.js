@@ -2,12 +2,169 @@
 const SUPABASE_URL = 'https://pxapeabojeqcwrcfaunx.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4YXBlYWJvamVxY3dyY2ZhdW54Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTkwNTUyNywiZXhwIjoyMDY1NDgxNTI3fQ.y4LrbiXtJw9pDTBgU0EJZLc0nw6yRx_sVQb0fcRNBe0';
 
+// Phone Verification Modal Logic
+const phoneVerificationModal = document.getElementById('phoneVerificationModal');
+const invalidTeamModal = document.getElementById('invalidTeamModal');
+const modalCountryCode = document.getElementById('modalCountryCode');
+const modalPhoneNumber = document.getElementById('modalPhoneNumber');
+const modalPhoneError = document.getElementById('modalPhoneError');
+const checkPhoneBtn = document.getElementById('checkPhoneBtn');
+const verificationMessage = document.getElementById('verificationMessage');
+const jacketForm = document.getElementById('jacketForm');
+const formPhoneCountry = document.getElementById('phoneCountry');
+const formPhone = document.getElementById('phone');
+
+// Phone validation function
+function validatePhone(phone) {
+  const phonePattern = /^[1-9][0-9]{8}$/;
+  return phonePattern.test(phone);
+}
+
+// Check phone button click handler
+checkPhoneBtn.addEventListener('click', async function() {
+  const countryCode = modalCountryCode.value;
+  const phoneNumber = modalPhoneNumber.value.trim();
+  
+  // Clear previous errors
+  modalPhoneError.textContent = '';
+  verificationMessage.style.display = 'none';
+  
+  // Validate phone number
+  if (!phoneNumber) {
+    modalPhoneError.textContent = 'يرجى إدخال رقم الجوال';
+    return;
+  }
+  
+  if (!validatePhone(phoneNumber)) {
+    modalPhoneError.textContent = 'رقم الجوال غير صحيح. يجب أن يبدأ برقم من 1-9 ويحتوي على 9 أرقام';
+    return;
+  }
+  
+  // Disable button and show loading
+  checkPhoneBtn.disabled = true;
+  checkPhoneBtn.textContent = 'جاري التحقق...';
+  
+  try {
+    const fullPhone = countryCode + phoneNumber;
+    const teamCode = document.getElementById('teamCode').value;
+    
+    const response = await fetch('https://n8n.srv886746.hstgr.cloud/webhook/d70b99bc-ca6b-49ad-85f5-ff2fc3b605f0', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        team_code: parseInt(teamCode),
+        phone: fullPhone
+      })
+    });
+    
+    if (response.ok) {
+      const responseText = await response.text();
+      if (responseText.trim() === '') {
+        // Empty response - invalid team code
+        handleInvalidTeam();
+      } else {
+        const data = JSON.parse(responseText);
+        handleVerificationResponse(data, fullPhone);
+      }
+    } else {
+      throw new Error('Network response was not ok');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    verificationMessage.style.display = 'block';
+    verificationMessage.className = 'verification-message error';
+    verificationMessage.textContent = 'حدث خطأ أثناء التحقق. يرجى المحاولة مرة أخرى.';
+  } finally {
+    // Re-enable button
+    checkPhoneBtn.disabled = false;
+    checkPhoneBtn.textContent = 'التحقق';
+  }
+});
+
+// Handle invalid team code
+function handleInvalidTeam() {
+  phoneVerificationModal.style.display = 'none';
+  invalidTeamModal.style.display = 'block';
+  // Disable form interaction
+  jacketForm.style.pointerEvents = 'none';
+  jacketForm.style.opacity = '0.5';
+}
+
+// Handle verification response
+function handleVerificationResponse(data, fullPhone) {
+  verificationMessage.style.display = 'block';
+  
+  // Case 1: No data or invalid team code
+  if (!data.TeamCode || data.TeamCode === null) {
+    handleInvalidTeam();
+    return;
+  }
+  
+  // Case 2: Check submission count
+  if (data.submission_count !== null && data.submission_count >= parseInt(data['Team Members'])) {
+    verificationMessage.className = 'verification-message error';
+    verificationMessage.textContent = 'عذراً، جميع أعضاء الفريق قد قاموا بتقديم النموذج بالفعل.';
+    return;
+  }
+  
+  // Case 3: Check status
+  if (data.Status === 'accepted' || data.Status === 'pending') {
+    verificationMessage.className = 'verification-message error';
+    verificationMessage.textContent = 'عذراً، لقد قمت بتقديم النموذج مسبقاً.';
+    return;
+  }
+  
+  // Case 4: Status is null or allowed - proceed
+  verificationMessage.className = 'verification-message success';
+  verificationMessage.textContent = 'تم التحقق بنجاح! يمكنك الآن إكمال النموذج.';
+  
+  // Set phone in form and disable it
+  formPhoneCountry.value = modalCountryCode.value;
+  formPhone.value = modalPhoneNumber.value;
+  formPhone.disabled = true;
+  formPhoneCountry.disabled = true;
+  
+  // Hide modal and enable form
+  setTimeout(() => {
+    phoneVerificationModal.style.display = 'none';
+    jacketForm.style.pointerEvents = 'auto';
+    jacketForm.style.opacity = '1';
+  }, 2000);
+}
+
+// Handle Enter key press in modal
+modalPhoneNumber.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    checkPhoneBtn.click();
+  }
+});
+
 // Populate team code from URL query string (e.g., ?team=1234)
 document.addEventListener('DOMContentLoaded', function() {
   console.log('JS loaded');
   const urlParams = new URLSearchParams(window.location.search);
   const teamCode = urlParams.get('team') || '';
+  
+  // Check if team code exists
+  if (!teamCode) {
+    handleInvalidTeam();
+    return;
+  }
+  
   document.getElementById('teamCode').value = teamCode;
+  
+  // Show phone verification modal
+  phoneVerificationModal.style.display = 'block';
+  // Disable form interaction
+  jacketForm.style.pointerEvents = 'none';
+  jacketForm.style.opacity = '0.5';
+  
+  // Focus on phone number input
+  setTimeout(() => {
+    modalPhoneNumber.focus();
+  }, 100);
 
   // Show/hide upload fields based on checkbox
   for (let i = 1; i <= 11; i++) {
