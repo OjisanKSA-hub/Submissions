@@ -386,7 +386,7 @@ const phoneNumberInput = document.getElementById('phoneNumber');
 const phoneError = document.getElementById('phoneError');
 
 function getFullPhoneNumber() {
-  return countryCodeInput.value + phoneNumberInput.value;
+  return formCountryCode.value + formPhoneNumber.value;
 }
 
 phoneNumberInput.addEventListener('input', function() {
@@ -522,6 +522,10 @@ form.addEventListener('submit', function(e) {
   submitButton.style.opacity = '0.6';
   submitButton.style.cursor = 'not-allowed';
   const formData = new FormData(form);
+  
+  // Manually add phone fields to FormData (in case they're disabled)
+  formData.append('رمز الدولة', formCountryCode.value);
+  formData.append('رقم الجوال', formPhoneNumber.value);
 
   // Build order JSON
   const orderObj = {};
