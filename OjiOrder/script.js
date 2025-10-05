@@ -1,7 +1,3 @@
-// Telegram Modal Logic
-const telegramModal = document.getElementById('telegramModal');
-const openTelegramBtn = document.getElementById('openTelegramBtn');
-
 // Phone Verification Modal Logic
 const phoneVerificationModal = document.getElementById('phoneVerificationModal');
 const modalCountryCode = document.getElementById('modalCountryCode');
@@ -13,22 +9,12 @@ const jacketOrderForm = document.getElementById('jacketOrderForm');
 const formCountryCode = document.getElementById('countryCode');
 const formPhoneNumber = document.getElementById('phoneNumber');
 
-// Show Telegram modal on page load
+// Show modal on page load
 document.addEventListener('DOMContentLoaded', function() {
-  telegramModal.style.display = 'block';
+  phoneVerificationModal.style.display = 'block';
   // Disable form interaction
   jacketOrderForm.style.pointerEvents = 'none';
   jacketOrderForm.style.opacity = '0.5';
-});
-
-// Handle Telegram button click
-openTelegramBtn.addEventListener('click', function() {
-  // Open Telegram bot in new tab
-  window.open('https://t.me/Ojisano_bot', '_blank');
-  
-  // Hide Telegram modal and show phone verification modal
-  telegramModal.style.display = 'none';
-  phoneVerificationModal.style.display = 'block';
   
   // Focus on phone number input
   setTimeout(() => {
