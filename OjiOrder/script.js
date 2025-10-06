@@ -68,6 +68,40 @@ checkPhoneBtn.addEventListener('click', async function() {
   
   try {
     const fullPhone = countryCode + phoneNumber;
+    // First: verify Telegram confirmation status
+    try {
+      const tgResponse = await fetch('https://n8n.srv886746.hstgr.cloud/webhook/0a6407d9-0957-43e8-b452-af47b7783d0a', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phone: fullPhone
+        })
+      });
+      if (tgResponse.ok) {
+        const tgText = await tgResponse.text();
+        const trimmed = tgText ? tgText.trim() : '';
+        if (!trimmed || trimmed === 'null' || trimmed === '[]' || trimmed === '{}') {
+          verificationMessage.style.display = 'block';
+          verificationMessage.className = 'verification-message warning';
+          verificationMessage.innerHTML = 'يرجى الضغط على زر "تأكيد" داخل بوت التيليجرام، ثم العودة لإكمال الطلب.\n\nرابط البوت: <a href="https://t.me/Ojisano_bot" target="_blank" rel="noopener">@Ojisano_bot</a>';
+          return;
+        }
+        // else: proceed to normal phone verification
+      } else {
+        verificationMessage.style.display = 'block';
+        verificationMessage.className = 'verification-message error';
+        verificationMessage.textContent = 'تعذر التحقق من تأكيد التيليجرام. حاول مرة أخرى.';
+        return;
+      }
+    } catch (tgErr) {
+      console.error('Telegram confirmation check error:', tgErr);
+      verificationMessage.style.display = 'block';
+      verificationMessage.className = 'verification-message error';
+      verificationMessage.textContent = 'حدث خطأ أثناء التحقق من التيليجرام. يرجى المحاولة مرة أخرى.';
+      return;
+    }
     const response = await fetch('https://n8n.srv886746.hstgr.cloud/webhook/e99a9c1c-ebf0-462a-ac0c-970f64752cf0', {
       method: 'POST',
       headers: {
