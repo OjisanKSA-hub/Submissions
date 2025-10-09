@@ -1,6 +1,7 @@
 // Telegram Modal Logic
 const telegramModal = document.getElementById('telegramModal');
 const openTelegramBtn = document.getElementById('openTelegramBtn');
+const closeTelegramModal = document.getElementById('closeTelegramModal');
 
 // Phone Verification Modal Logic
 const phoneVerificationModal = document.getElementById('phoneVerificationModal');
@@ -19,6 +20,18 @@ document.addEventListener('DOMContentLoaded', function() {
   // Disable form interaction
   jacketOrderForm.style.pointerEvents = 'none';
   jacketOrderForm.style.opacity = '0.5';
+});
+
+// Handle close button click
+closeTelegramModal.addEventListener('click', function() {
+  // Hide Telegram modal and show phone verification modal
+  telegramModal.style.display = 'none';
+  phoneVerificationModal.style.display = 'block';
+  
+  // Focus on phone number input
+  setTimeout(() => {
+    modalPhoneNumber.focus();
+  }, 100);
 });
 
 // Handle Telegram button click

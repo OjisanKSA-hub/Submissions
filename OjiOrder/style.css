@@ -1005,6 +1005,32 @@ button[type="submit"]:disabled {
 
 .telegram-modal-content .modal-header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.close-telegram {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  line-height: 1;
+}
+
+.close-telegram:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1) rotate(90deg);
 }
 
 .telegram-modal-content .modal-header h2 {
@@ -1106,6 +1132,14 @@ button[type="submit"]:disabled {
     padding: 20px;
   }
   
+  .close-telegram {
+    left: 15px;
+    top: 15px;
+    font-size: 1.8rem;
+    width: 32px;
+    height: 32px;
+  }
+  
   .telegram-icon {
     font-size: 3rem;
     margin-bottom: 15px;
@@ -1145,6 +1179,14 @@ button[type="submit"]:disabled {
   
   .telegram-modal-content .modal-body {
     padding: 15px;
+  }
+  
+  .close-telegram {
+    left: 10px;
+    top: 10px;
+    font-size: 1.6rem;
+    width: 30px;
+    height: 30px;
   }
   
   .telegram-icon {
